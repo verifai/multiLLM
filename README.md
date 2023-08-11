@@ -8,11 +8,11 @@ VerifAI Implementation of invoking multiple large language models concurrently a
 ## Architecture
 ### High Level Overview
 ![alt](images/Mutli_LLM.png)
-### Multi_LLM Class
+## Multi_LLM Class
 This is the highest level, here we can instantiate MultiLLM objects using either config files (see [config files](###Config-Files)) or manually instantiating a custom or hosted LLM. 
 In this class we call multiple LLMs concurrently and then we can operate on the results of each in parallel using the [Action Class](###Action-Class).
 
-## Overview
+### Overview
 
 The "Multi_LLM" Python code provides a versatile framework for managing and orchestrating multiple language models (LLMs) within a single application. This code is designed to enhance the efficiency of working with language models by enabling concurrent execution, response processing, and model loading from configuration files. The key features and components of the code include:
 
@@ -28,9 +28,9 @@ The "Multi_LLM" Python code provides a versatile framework for managing and orch
 
 By using the "Multi_LLM" Python code, developers can streamline their interactions with multiple language models, seamlessly integrating them into various applications or projects. The code promotes modularity, reusability, and parallelism in working with language models, ultimately enhancing the user experience and productivity.
 
-### BaseLLM
+## BaseLLM
 
-## Overview
+### Overview
 
 `BaseLLM` is designed to serve as the basis for implementing various language model classes. This `BaseLLM` class encapsulates essential attributes and methods necessary for interfacing with language models. The code establishes a structured foundation for building specific language model implementations and harmonizes their interaction within a larger application context.
 
@@ -46,11 +46,11 @@ Key features and components of the code include:
 
 `BaseLLM` aims to streamline the development of specific language model implementations by providing a consistent structure and standardized attributes. Developers can extend this base class to create custom language model classes that seamlessly integrate into the broader application ecosystem. This modular approach promotes reusability, maintainability, and consistent design patterns when working with various language models.
 
-# Implementing Your Own BaseLLM
+## Implementing Your Own BaseLLM
 
 This section will guide you through the process of creating your own `BaseLLM` implementation by extending the existing class and customizing it to fit the requirements of your specific language model.
 
-## Getting Started
+### Getting Started
 
 To begin, follow these steps:
 
@@ -62,7 +62,7 @@ To begin, follow these steps:
 from BaseLLM import BaseLLM
 ```
 
-## Defining Your Custom BaseLLM
+### Defining Your Custom BaseLLM
 
 Now that you've imported the `BaseLLM` class, you can define your own implementation. Follow these steps:
 
@@ -119,13 +119,9 @@ print(content)
 
 By extending the provided `BaseLLM` class, you can easily create custom language model implementations tailored to your project's needs. This structured approach ensures consistency and modularity in your codebase, allowing you to focus on the unique aspects of your language model while leveraging the foundational structure provided by `BaseLLM`.
 
-### Config JSON
+## Config JSON
 
-# Using the `config.json` File
-
-The `config.json` file offers a convenient way to configure and load multiple language models using the "Multi_LLM" framework. This section will guide you through the process of creating and utilizing a `config.json` file to load and use specific language models in your application.
-
-## Configuration Setup
+### Configuration Setup
 
 To get started, follow these steps to configure your `config.json` file:
 
@@ -156,7 +152,7 @@ To get started, follow these steps to configure your `config.json` file:
 }
 ```
 
-## Loading Models Using Multi_LLM
+### Loading Models Using Multi_LLM
 
 After creating the `config.json` file, you can use the "Multi_LLM" framework to load and utilize the configured models in your application. Follow these steps:
 
@@ -182,11 +178,9 @@ responses = multi_llm.run(prompt, action_chain)
 print(responses)
 ```
 
-## Conclusion
-
 By utilizing the `config.json` file, you can easily configure and load multiple language models using the "Multi_LLM" framework. This approach streamlines the process of managing and executing multiple models concurrently, providing a flexible and structured way to integrate various language models into your applications.
 
-### Action Class
+## Action Class
 This is the interface class which we use to operate on the output while still in parallel. Action class instances are define by the user and can be chained indefinitely with other Actiion instances.
 There are two methods that are used to interface with the class: `apply()` and `then()`.
 The first, `apply()` is what is used internally to call the methods we register. Registration is as follows:
