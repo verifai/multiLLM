@@ -11,7 +11,7 @@ After cloning:
 Install [requirements.txt](requirements.txt)
 `pip3 install -r requirements.txt`
 
-Edit the (config file)[#config-files] to point to your google and openai API keys. 
+Edit the [config file](###Config-JSON) to point to your google and openai API keys. 
 
 ### Basic Example
 `python example.py -c config.json -prompt "write a python function to create a decision tree"`
@@ -46,32 +46,37 @@ python3 multi_llm.py -c <config_file> -prompt "<prompt_text>"
 
 ### Config Files
 
-The configuration file (`config.json`) defines the language models and their associated parameters. It follows the structure outlined below:
+The configuration file (`config.json`) defines the language models and their associated parameters.  See [Config JSON](###Config-JSON) for more information.
+It follows the structure outlined below: 
 
 ```json
 {
-    "TestGuru": {
-        "model": "openai",
-        "temp": 0.7,
-        "args": {
-            "arg1": "val1",
-            "arg2": "val2"
-        }
-    },
-    "GooglePalm": {
-        "model": "google-palm",
-        "temp": 0.9,
-        "args": {
-            "arg1": "val1",
-            "arg2": "val2"
+    "Config": {
+        "Multi_LLM": {
+            "llms": [
+                {
+                    "file": "bard.py",
+                    "class_name": "BARD",
+                    "model": "chat-bison@001",
+                    "credentials": "/path/to/google/key.json"
+                },
+                {
+                    "file": "GPT.py",
+                    "class_name": "GPT",
+                    "model": "gpt-3.5-turbo",
+                    "credentials": "/path/to/openai/key.json"
+                }
+            ]
         }
     }
 }
+}
+
 ```
 
 ### Running the Application
 
-To run the VerifAI Multi_LLM application, follow these steps:
+To run the Multi_LLM application, follow these steps:
 
 1. Create or update the `config.json` file with the desired language model configurations.
 
