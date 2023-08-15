@@ -4,7 +4,7 @@ VerifAI Implementation of invoking multiple large language models concurrently a
 
 ## Quick-Start
 
-For further information look to [Running the Multi_LLM Application](#running-the-multi_llm-ppplication) inside of [Use](#use)
+For further information look to [Running the Multi_LLM Application](#running-the-multi_llm-application) inside of [Use](#use)
 
 ### Requirements
 After cloning:
@@ -70,8 +70,6 @@ It follows the structure outlined below:
         }
     }
 }
-}
-
 ```
 
 ### Running the Application
