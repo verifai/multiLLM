@@ -2,6 +2,7 @@
 
 VerifAI Implementation of invoking multiple large language models concurrently and ranking results
 
+
 ## Quick-Start
 
 For further information look to [Running the Multi_LLM Application](#running-the-application) inside of [Use](#use)
@@ -14,7 +15,7 @@ Install [requirements.txt](requirements.txt)
 Edit the [config file](#config-json) to point to your google and openai API keys. 
 
 ### Basic Example
-`python example.py -c config.json -prompt "write a python function to create a decision tree"`
+`python example.py -c config.json -prompt "write a python function to determine whether a given number is prime"`
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
@@ -140,7 +141,7 @@ To begin, follow these steps:
 from BaseLLM import BaseLLM
 ```
 
-### Defining Your Custom BaseLLM
+### Defining Your Custom LLM Class
 
 Now that you've imported the `BaseLLM` class, you can define your own implementation. Follow these steps:
 
@@ -285,6 +286,10 @@ What we did was create some actions that are simple I/O operations on data. We c
 
 After you have created the action chain you can pass this into the `Multi_LLM.run()` method and run.
 
+### Action Chain
+
+The `Action Chain` is a core component of processesing LLM output. In the provided [example.py](examples/example.py) we see the first action defined is for processing the LLM response and extracting the code alone from the response. This could be a first of many steps, what could follow could be saving the code to the file or extracting information through the `ast` module. The actions are meant to be ran on each of the model's outputs so they should be generalized for use.
+
 ## Rank Class
 The `Rank` class is identical in functionality to the `Action` class, though the use is different. While the `Action` class is used to accept and modify data in each of the models, the `Rank` class' purpose is to modify the final combined output of the LLMs. 
 This output is stored in a dictionary keyed by the model's names. The `Rank` class's methods should be written to take this data and operate on it. 
@@ -302,3 +307,7 @@ rank_object = Rank(operation=print_llms)
 results = mLLLM.run(prompt, action_chain, rank_object)
 ```
 In the above code we are doing very similar actions as those seen above. The methodoly is the same. In this case we only have a single object, so instead of creating a `rank_chain` we simply pass in our single instantiated object.
+
+## Contribution
+
+You can contribute by extending the models located in [models](models). See the [BaseLLM](#baselmm) section for more information on the necessary mechanisms for extending the BaseLLM class.
