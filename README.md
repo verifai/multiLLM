@@ -4,14 +4,14 @@ VerifAI Implementation of invoking multiple large language models concurrently a
 
 ## Quick-Start
 
-For further information look to [Running the Multi_LLM Application](##Running-the-Multi_LLM-Application) inside of [Use](##Use)
+For further information look to [Running the Multi_LLM Application](#running-the-multi_llm-ppplication) inside of [Use](#use)
 
 ### Requirements
 After cloning:
 Install [requirements.txt](requirements.txt)
 `pip3 install -r requirements.txt`
 
-Edit the [config file](###Config-JSON) to point to your google and openai API keys. 
+Edit the [config file](#config-json) to point to your google and openai API keys. 
 
 ### Basic Example
 `python example.py -c config.json -prompt "write a python function to create a decision tree"`
@@ -46,7 +46,7 @@ python3 multi_llm.py -c <config_file> -prompt "<prompt_text>"
 
 ### Config Files
 
-The configuration file (`config.json`) defines the language models and their associated parameters.  See [Config JSON](###Config-JSON) for more information.
+The configuration file (`config.json`) defines the language models and their associated parameters.  See [Config JSON](#config-json) for more information.
 It follows the structure outlined below: 
 
 ```json
@@ -89,16 +89,12 @@ To run the Multi_LLM application, follow these steps:
 
 4. The application will run the specified language models concurrently, process their responses using the provided prompt, and display the results.
 
-		  
-```
 ## Architecture
 ### High Level Overview
 ![alt](images/Mutli_LLM.png)
 ### Multi_LLM Class
 This is the highest level, here we can instantiate MultiLLM objects using either config files (see [config files](###Config-Files)) or manually instantiating a custom or hosted LLM. 
 In this class we call multiple LLMs concurrently and then we can operate on the results of each in parallel using the [Action Class](###Action-Class).
-
-## Overview
 
 The "Multi_LLM" Python code provides a versatile framework for managing and orchestrating multiple language models (LLMs) within a single application. This code is designed to enhance the efficiency of working with language models by enabling concurrent execution, response processing, and model loading from configuration files. The key features and components of the code include:
 
@@ -116,8 +112,6 @@ By using the "Multi_LLM" Python code, developers can streamline their interactio
 
 ### BaseLLM
 
-## Overview
-
 `BaseLLM` is designed to serve as the basis for implementing various language model classes. This `BaseLLM` class encapsulates essential attributes and methods necessary for interfacing with language models. The code establishes a structured foundation for building specific language model implementations and harmonizes their interaction within a larger application context.
 
 Key features and components of the code include:
@@ -132,11 +126,11 @@ Key features and components of the code include:
 
 `BaseLLM` aims to streamline the development of specific language model implementations by providing a consistent structure and standardized attributes. Developers can extend this base class to create custom language model classes that seamlessly integrate into the broader application ecosystem. This modular approach promotes reusability, maintainability, and consistent design patterns when working with various language models.
 
-# Implementing Your Own BaseLLM
+### Implementing Your Own BaseLLM
 
 This section will guide you through the process of creating your own `BaseLLM` implementation by extending the existing class and customizing it to fit the requirements of your specific language model.
 
-## Getting Started
+### Getting Started
 
 To begin, follow these steps:
 
@@ -148,7 +142,7 @@ To begin, follow these steps:
 from BaseLLM import BaseLLM
 ```
 
-## Defining Your Custom BaseLLM
+### Defining Your Custom BaseLLM
 
 Now that you've imported the `BaseLLM` class, you can define your own implementation. Follow these steps:
 
@@ -205,13 +199,13 @@ print(content)
 
 By extending the provided `BaseLLM` class, you can easily create custom language model implementations tailored to your project's needs. This structured approach ensures consistency and modularity in your codebase, allowing you to focus on the unique aspects of your language model while leveraging the foundational structure provided by `BaseLLM`.
 
-### Config JSON
+## Config JSON
 
-# Using the `config.json` File
+### Using the `config.json` File
 
 The `config.json` file offers a convenient way to configure and load multiple language models using the "Multi_LLM" framework. This section will guide you through the process of creating and utilizing a `config.json` file to load and use specific language models in your application.
 
-## Configuration Setup
+### Configuration Setup
 
 To get started, follow these steps to configure your `config.json` file:
 
@@ -242,7 +236,7 @@ To get started, follow these steps to configure your `config.json` file:
 }
 ```
 
-## Loading Models Using Multi_LLM
+### Loading Models Using Multi_LLM
 
 After creating the `config.json` file, you can use the "Multi_LLM" framework to load and utilize the configured models in your application. Follow these steps:
 
@@ -268,11 +262,7 @@ responses = multi_llm.run(prompt, action_chain)
 print(responses)
 ```
 
-## Conclusion
-
-By utilizing the `config.json` file, you can easily configure and load multiple language models using the "Multi_LLM" framework. This approach streamlines the process of managing and executing multiple models concurrently, providing a flexible and structured way to integrate various language models into your applications.
-
-### Action Class
+## Action Class
 This is the interface class which we use to operate on the output while still in parallel. Action class instances are define by the user and can be chained indefinitely with other Actiion instances.
 There are two methods that are used to interface with the class: `apply()` and `then()`.
 The first, `apply()` is what is used internally to call the methods we register. Registration is as follows:
@@ -296,3 +286,21 @@ action_chain = action1.then(action2)
 What we did was create some actions that are simple I/O operations on data. We can then chain them together using the `then()` method mentioned above. The order of operations for then is left to right, in this case action1 will go first then action2. These actions can be tailored to your own specification, since the actions are serial, you can specify the information that is going to be passed into the function and what information will be returned.
 
 After you have created the action chain you can pass this into the `Multi_LLM.run()` method and run.
+
+## Rank Class
+The `Rank` class is identical in functionality to the `Action` class, though the use is different. While the `Action` class is used to accept and modify data in each of the models, the `Rank` class' purpose is to modify the final combined output of the LLMs. 
+This output is stored in a dictionary keyed by the model's names. The `Rank` class's methods should be written to take this data and operate on it. 
+```python
+#Write an interfacing function, a simple print
+def print_llms(dictionary):
+	for key,val in dictionary.items():
+		print(key, val)
+
+# Create Rank instances
+rank_object = Rank(operation=print_llms)
+
+# Running the LLM, assuming an instance of 
+# Multi_LLM named mLLM
+results = mLLLM.run(prompt, action_chain, rank_object)
+```
+In the above code we are doing very similar actions as those seen above. The methodoly is the same. In this case we only have a single object, so instead of creating a `rank_chain` we simply pass in our single instantiated object.
