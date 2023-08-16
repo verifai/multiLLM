@@ -311,3 +311,4 @@ In the above code we are doing very similar actions as those seen above. The met
 ## Contribution
 
 You can contribute by extending the models located in [models](models). See the [BaseLLM](#baselmm) section for more information on the necessary mechanisms for extending the BaseLLM class.
+For further information contact [ethansaurusrex](https://github.com/ethansaurusrex)
