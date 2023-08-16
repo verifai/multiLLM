@@ -90,7 +90,7 @@ To run the Multi_LLM application, follow these steps:
 
 ## Architecture
 ### High Level Overview
-![alt](images/Mutli_LLM.png)
+![alt](images/Mutli_LLM_1.png)
 ### Multi_LLM Class
 This is the highest level, here we can instantiate MultiLLM objects using either config files (see [config files](###Config-Files)) or manually instantiating a custom or hosted LLM. 
 In this class we call multiple LLMs concurrently and then we can operate on the results of each in parallel using the [Action Class](###Action-Class).
