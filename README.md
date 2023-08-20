@@ -188,10 +188,11 @@ print(content)
 
 By extending the provided `BaseLLM` class, you can easily create custom language model implementations tailored to your project's needs. This structured approach ensures consistency and modularity in your codebase, allowing you to focus on the unique aspects of your language model while leveraging the foundational structure provided by `BaseLLM`.
 
-## Example of GPT interface
+## Example GPT interface
 <details>
-  <summary>GPT.py</summary>
-mport os,sys
+  <summary>Example Model GPT.py</summary>
+```python
+import os,sys
 import openai
 import json
 from multillm.BaseLLM import BaseLLM
@@ -275,7 +276,7 @@ class GPT(BaseLLM):
             return(self.get_content(response))
         else:
             return response
-
+```
 </details>
  
 ## Config JSON
