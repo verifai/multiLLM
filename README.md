@@ -17,10 +17,10 @@ After cloning:
 Install [requirements.txt](requirements.txt)
 `pip3 install -r requirements.txt`
 
-Edit the [config file](#config-json) to point to your google and openai API keys. 
+Edit the [config file](config.json) to point to your google and openai API keys. 
 
 ### Basic Example
-`python example.py -c config.json -prompt "write a python function to determine whether a given number is prime"`
+`multillm -c config.json -prompt "write a python function to determine whether a given number is prime"`
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
