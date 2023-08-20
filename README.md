@@ -5,12 +5,11 @@ VerifAI Implementation of invoking multiple large language models concurrently a
 
 ## Quick-Start
 
-For further information look to [Running the Multi_LLM Application](#running-the-application) inside of [Use](#use)
+For further information look to [Running the Multi_LLM Application](#running-the-application) inside of [Useage](#useage)
 
-### Requirements
-After cloning:
-Install [requirements.txt](requirements.txt)
-`pip3 install -r requirements.txt`
+### Installation
+
+`pip3 install multillm`
 
 Edit the [config file](#config-json) to point to your google and openai API keys. 
 
