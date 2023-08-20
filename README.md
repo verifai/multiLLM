@@ -191,25 +191,13 @@ class GPT(BaseLLM):
     
         """ Get the text from the response of an LLM
         e.g.: openai returns the following response, this method should return the 'content'.
-        {
-          "choices":
-             [{
-                 {
-               "finish_reason": "stop",
-                "index": 0,
-                "message": {
-                    "content": "from datetime import date\ntoday = date.today()\nprint(\"Today's date is:\", today)",
-                    "role": "assistant"
-                }
-                 }}]
-        }
+        { "choices": [{{"message": 
+			{"content": "def binary_sort(arr):"}}}]}
         """
-        """ return content """
         return response["choices"][0]["message"]["content"]
-    
-    
+
+    # Get Response -- Required Method, Call openai API
     def get_response(self, prompt):
-        
         # setup prompt for API call
         messages=[]
         
@@ -217,10 +205,7 @@ class GPT(BaseLLM):
         if prompt.context:
             messages.append({"role": prompt.get_role(), "content" : prompt.get_context()})
         
-        # Setup Credentials 
-        """ or seet an Env Variable to be more secure
-        self.credentials = os.getenv('OPENAI_APPLICATION_CREDENTIALS')
-        """
+        # Read Credentials file specified in the config.json, setup for openai
         if not os.path.exists(self.credentials):
             print('error (multi_llm): could not find openai_credentials: {0}' .format(self.credentials))
             return 
