@@ -191,7 +191,9 @@ By extending the provided `BaseLLM` class, you can easily create custom language
 ## Example GPT interface
 <details>
   <summary>Example Model GPT.py</summary>
+	
 ```python
+	
 import os,sys
 import openai
 import json
@@ -201,11 +203,10 @@ from multillm.Prompt import Prompt
 
 # Openai gpt interface
 """
-The GPT class extends the BaseModel class and overrides the get_response() method, providing an implementation.
+The GPT class extends the BaseModel class,  implements the required methods: get_response() and get_content().
 The get_response() method takes a response parameter and returns the content of the first response in the given response object.
 """
 class GPT(BaseLLM):
-    
 
     #implement here
     def __init__ (self, **kwargs):
