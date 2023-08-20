@@ -20,7 +20,7 @@ Edit the [config file](#config-json) to point to your google and openai API keys
 The above example will run the [config.json](config.json) with the provided prompt. 
 
 <details>
-	<summary><strong></string>Output of the above multillm command</strong></summary>
+	<summary><strong>Output of the above multillm command</strong></summary>
 	
 #### multi llm response
 1. *GPT's implementation of the sort_integers function is cleaner and more readable compared to BARD's implementation. They use the built-in sorted function which returns a new sorted list, while BARD uses the sort method which modifies the original list in-place. GPT's implementation is more intuitive and follows best practices for Python programming.*
@@ -56,7 +56,7 @@ The configuration file (`config.json`) defines the language models and their ass
 It follows the structure outlined below: 
 
 <details>
-	<summary>Example Config.json file</summary>
+	<summary><strong></strong>Example Config.json file</strong></summary>
 
 ```json
 {
@@ -167,7 +167,7 @@ By extending the provided `BaseLLM` class, you can easily create custom language
 
 ## Example GPT interface
 <details>
-  <summary>Example Model GPT.py</summary>
+  <summary><strong>Example Model GPT.py</strong></summary>
 	
 ```python
 	
