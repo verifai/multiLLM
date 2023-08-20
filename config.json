@@ -1,0 +1,29 @@
+{
+    "Config":
+  
+    {
+        "MultiLLM" :
+        {
+            "rank_callback_file" : "example_rank_callback.py",
+            
+            "llms" : [
+            
+                {
+                    "file" : "models/bard.py",
+                    "class_name": "BARD",
+                    "model" : "chat-bison@001",
+                    "credentials" : "/Users/sandeep/.config/gcloud/application_default_credentials.json"
+
+                },
+                {
+                    "file" : "models/GPT.py",
+                    "class_name": "GPT",
+                    "model" : "gpt-3.5-turbo",
+                    "credentials" : "/Users/sandeep/.config/openai/key.json"
+
+                }
+            ]
+        }
+    
+    }
+}

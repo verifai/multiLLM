@@ -1,11 +1,6 @@
 # Multi LLM
 
-VerifAI Implementation of invoking multiple large language models concurrently and ranking results.
-
-MultiLLM is a Python framework to invoke multiple LLM's and to rank the outputs to determine the best result.
-Two default model interfaces are provided: GPT3.5 (gpt-3.5-turbo) and Google-Bard (chat-bison@001)
-A default Ranking model that ranks code produced from GPT3.5 and Google-Bard is provided.
-It is easy to add new LLM interfaces and custom ranking with a few lines of code.
+VerifAI Implementation of invoking multiple large language models concurrently and ranking results
 
 
 ## Quick-Start
@@ -17,10 +12,10 @@ After cloning:
 Install [requirements.txt](requirements.txt)
 `pip3 install -r requirements.txt`
 
-Edit the [config file](config.json) to point to your google and openai API keys. 
+Edit the [config file](#config-json) to point to your google and openai API keys. 
 
 ### Basic Example
-`multillm -c config.json -prompt "write a python function to determine whether a given number is prime"`
+`python example.py -c config.json -prompt "write a python function to determine whether a given number is prime"`
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
