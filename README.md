@@ -56,7 +56,7 @@ The configuration file (`config.json`) defines the language models and their ass
 It follows the structure outlined below: 
 
 <details>
-	<summary><strong></strong>Example Config.json file</strong></summary>
+	<summary><strong>Example Config.json file</strong></summary>
 
 ```json
 {
