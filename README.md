@@ -19,6 +19,15 @@ Edit the [config file](#config-json) to point to your google and openai API keys
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
+<details>
+	<summary>Output of multillm</summary>
+multi llm response 
+1. *GPT*
+GPT's implementation of the sort_integers function is cleaner and more readable compared to BARD's implementation. They use the built-in sorted function which returns a new sorted list, while BARD uses the sort method which modifies the original list in-place. GPT's implementation is more intuitive and follows best practices for Python programming.
+
+2. *BARD*
+BARD's implementation is functional but could be improved. They use the sort method to sort the list in-place, which can be confusing if someone expects the function to return a new sorted list. However, their implementation is still correct and will sort the list correctly.
+</details>
 
 ## Use
 
