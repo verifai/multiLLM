@@ -15,7 +15,7 @@ Install [requirements.txt](requirements.txt)
 Edit the [config file](#config-json) to point to your google and openai API keys. 
 
 ### Basic Example
-`python example.py -c config.json -prompt "write a python function to determine whether a given number is prime"`
+`multillm -c config.json -prompt "write a python function to determine whether a given number is prime"`
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
@@ -83,7 +83,7 @@ To run the Multi_LLM application, follow these steps:
 
 3. Execute the following command, replacing `<config_file>` with the actual path to your configuration file and `<prompt_text>` with the desired prompt text:
    ```bash
-   python3 multi_llm.py -c <config_file> -prompt "<prompt_text>"
+   multillm -c <config_file> -prompt "<prompt_text>"
    ```
 
 4. The application will run the specified language models concurrently, process their responses using the provided prompt, and display the results.
@@ -138,46 +138,39 @@ To begin, follow these steps:
 2. **Import BaseLLM**: Import the `BaseLLM` class from the provided code. You'll use this as the parent class for your custom implementation.
 
 ```python
-from BaseLLM import BaseLLM
+from multillm.BaseLLM import BaseLLM
 ```
 
-### Defining Your Custom LLM Class
+### Adding a new LLM interface
 
-Now that you've imported the `BaseLLM` class, you can define your own implementation. Follow these steps:
+Now that you've imported the `BaseLLM` class, you can add a new LLM. Follow these steps:
 
 1. **Create Your Class**: Define a new class that inherits from `BaseLLM`.
 
 ```python
-class CustomLLM(BaseLLM):
+class NewLLM(BaseLLM):
     pass
 ```
 
 2. **Customize Attributes**: Customize the attributes of your custom class to match the requirements of your language model. You can add new attributes or modify existing ones as needed.
 
 ```python
-class CustomLLM(BaseLLM):
-    model = "your_model_name"
-    roles = ["role1", "role2"]
-    messages = [["message1"], ["message2"]]
-    temp = 0.7
-    api_key = "your_api_key"
-    max_tokens = 100
-    args = "your_custom_args"
-    
+class NewLLM(BaseLLM):
+   
     def __init__(self, **kwargs):
         # Customize initialization as needed
         super().__init__(**kwargs)
 ```
 
-3. **Implement Methods**: Implement the required methods: `get_response()` and `get_content()`. The `get_response()` method should execute your language model with the provided prompt, and the `get_content()` method should extract relevant content from the response.
+3. **Implement Methods**: Implement the *required methods*: `get_response()` and `get_content()`. The `get_response()` method should execute your language model with the provided prompt, and the `get_content()` method should extract relevant content from the response.
 
 ```python
-class CustomLLM(BaseLLM):
+class NewLLM(BaseLLM):
     # ... (attributes and __init__ method as before)
     
     def get_response(self, prompt):
         # Implement your language model interaction here
-        response = "Generated response based on prompt"
+        response =  <"Generated response from new LLM model based on prompt">
         return response
     
     def get_content(self, response):
@@ -186,10 +179,10 @@ class CustomLLM(BaseLLM):
         return content
 ```
 
-4. **Usage**: You can now use your custom `CustomLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
+4. **Usage**: You can now use your custom `NewLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
 
 ```python
-custom_llm = CustomLLM(model="custom_model", credentials="your_credentials")
+custom_llm = NewLLM(model="custom_model", credentials="your_credentials")
 prompt = "Generate something amazing."
 response = custom_llm.get_response(prompt)
 content = custom_llm.get_content(response)
@@ -198,6 +191,12 @@ print(content)
 
 By extending the provided `BaseLLM` class, you can easily create custom language model implementations tailored to your project's needs. This structured approach ensures consistency and modularity in your codebase, allowing you to focus on the unique aspects of your language model while leveraging the foundational structure provided by `BaseLLM`.
 
+## Example of GPT interface
+<details>
+  <summary>GPT.py</summary>
+## GPT.py file
+</details>
+ 
 ## Config JSON
 
 ### Using the `config.json` File
