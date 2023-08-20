@@ -28,7 +28,7 @@ The above example will run the [config.json](config.json) with the provided prom
 2. *BARD's implementation is functional but could be improved. They use the sort method to sort the list in-place, which can be confusing if someone expects the function to return a new sorted list. However, their implementation is still correct and will sort the list correctly.*
 </details>
 
-## Use
+## Usage
 
 The Multi_LLM application provides a powerful and efficient solution for invoking multiple large language models (LLMs) concurrently and effectively managing their outputs. This section guides you through the steps required to run the application using various command-line options and configuration files.
 
@@ -52,7 +52,7 @@ multillm -c <config_file> -prompt "<prompt_text>"
 
 ### Config Files
 
-The configuration file (`config.json`) defines the language models and their associated parameters.  See [Config JSON](#config-json) for more information.
+The configuration file [config.json](config.json) defines the language models and their associated parameters.  See [Config JSON](#config-json) for more information.
 It follows the structure outlined below: 
 
 <details>
