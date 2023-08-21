@@ -98,24 +98,62 @@ To run the Multi_LLM application, follow these steps:
 
 
 
-### Implementing Your Own BaseLLM
+### Adding a new LLM interface
 
-This section will guide you through the process of creating your own `BaseLLM` implementation by extending the existing class and customizing it to fit the requirements of your specific language model.
+This section will guide you through the process of adding a new LLM by extending the `BaseLLM` class and customizing it to fit the requirements of your specific language model.
 
 ### Getting Started
 
 To begin, follow these steps:
 
-1. **Create a New Python File**: Start by creating a new Python file in your project directory, or within the appropriate package, where you'll define your custom `BaseLLM` implementation.
+1. **Create a New Python File**: Start by creating a new Python file in your project directory '<NewLLM.py>' , or within the appropriate package, where you'll define your custom implementation.
 
 2. **Import BaseLLM**: Import the `BaseLLM` class from the provided code. You'll use this as the parent class for your custom implementation.
 
+<details> <summary>Example of NewLLM.py</summary>
+	
 ```python
+import os,sys
 from multillm.BaseLLM import BaseLLM
+from multillm.Prompt import Prompt
+# <add additional imports here>
+
+
+# NewLLM interface                                                                                                                              
+"""                                                                                                                                                 
+The NewLLM class extends the BaseModel class and overrides the get_response() method, providing an implementation.                                           
+"""
+class NewLLM(BaseLLM):
+    #  _implement get_content()_
+    def get_content(self, response):
+	""" Return the text content from the response of your LLM """
+	resp = response["choices"][0]["message"]["content"]
+        return resp
+
+   # The get_response() method takes a prompt and returns the response of the LLM
+   def get_response(self, prompt):
+        # setup prompt for API call here                                                                                                                 
+        # Setup Credentials here                                                                                                                         
+        if not os.path.exists(self.credentials):
+            print('error (multi_llm): could not find credentials: {0}' .format(self.credentials))
+            return
+        # Open credentials file for reading                                                                                                                 
+        try:
+            with open(self.credentials, 'r') as file:
+                # Load the JSON data from the file              
+   		# add credentials to your API
+        except Exception as e:
+	    print('(multi_llm) error: could not load credentials {0} : {1}' .format(self.credentials,str(e)))
+	    return
+       # do API call to NewLLM below                                                                                                                                 response = newllm.ChatCompletion.create(
+	    model = self.model
+        )
+        if response:
+            return(self.get_content(response))
+        else:
+	    return None
 ```
-
-### Adding a new LLM interface
-
+</details>
 Now that you've imported the `BaseLLM` class, you can add a new LLM. Follow these steps:
 
 1. **Create Your Class**: Define a new class that inherits from `BaseLLM`.
