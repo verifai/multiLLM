@@ -152,8 +152,10 @@ class NewLLM(BaseLLM):
             return(self.get_content(response))
         else:
 	    return None
+
 ```
 </details>
+
 Now that you've imported the `BaseLLM` class, you can add a new LLM. Follow these steps:
 
 1. **Create Your Class**: Define a new class that inherits from `BaseLLM`.
