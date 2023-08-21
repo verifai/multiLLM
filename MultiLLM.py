@@ -101,7 +101,7 @@ class MultiLLM(object):
                     else:
                         result = response
                         
-                        #print("Result:", result)
+                        print("Result:", result)
                         """
                             with multiprocessing.Pool() as action_pool:
                             action_results = action_pool.apply_async(action_chain.apply, (response,))

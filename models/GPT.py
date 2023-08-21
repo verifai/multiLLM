@@ -1,8 +1,8 @@
 import os,sys
 import openai
 import json
-from BaseLLM import BaseLLM
-import Prompt
+from multillm.BaseLLM import BaseLLM
+from multillm.Prompt import Prompt
 
 
 # Openai gpt interface
@@ -49,7 +49,9 @@ class GPT(BaseLLM):
         }
         """
         """ return content """
-        return response["choices"][0]["message"]["content"]
+        resp = response["choices"][0]["message"]["content"]
+        print('GPT response {0}' .format(resp))
+        return resp
     
     
     def get_response(self, prompt):
@@ -93,6 +95,7 @@ class GPT(BaseLLM):
         # return response
         #print("response {0}" .format(response))
         if response:
+            
             return(self.get_content(response))
         else:
             return response
