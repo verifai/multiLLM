@@ -215,68 +215,68 @@ This section will guide you through the process of adding a new LLM by extending
 - Define a new class that inherits from `BaseLLM`. Implement the required methods: get_response() and get_content(). The get_response() method should execute your language model with the provided prompt, and the get_content() method should extract relevant content from the response.
    - **See Example Below:** 
 
-   <details> <summary>Example NewLLM.py</summary>
+	<details> <summary>Example NewLLM.py</summary>
 	
-```python
-import os,sys
-from multillm.BaseLLM import BaseLLM
-from multillm.Prompt import Prompt
-# <add additional imports here>
-
-
-# NewLLM interface                                                                                                                              
-"""                                                                                                                                                 
-The NewLLM class extends the BaseModel class and overrides the get_response() method, providing an implementation.                                           
-"""
-class NewLLM(BaseLLM):
-    # ... (attributes and __init__ method)
-    def __init__ (self, **kwargs):
-	 # add values here directly or if kwargs are specified they are taken from the config file
-        defaults  = {
-            "class_name" : "NewLLM",
-            "model" : "newLLM-bison@06",
-            "credentials" : "/path/to-my/key.json"
-        }
-    # ... Call API and get response from NewLLM
-    def get_response(self, prompt):
-        # Implement your language model interaction here
-        # access credentials file from *self.credentials*
-        # access model from *self.model*
-  	# access class_name from *self.class_name*
-        response =  <"Generated response from  NewLLM model based on prompt">
-        return response
-
-    # ... Parse and Filter raw response from NewLLM and return text/code content
-    def get_content(self, response):
-        # Implement content extraction from the response
-        content = "Extracted content from response"
-        return content
-```
+	```python
+	import os,sys
+	from multillm.BaseLLM import BaseLLM
+	from multillm.Prompt import Prompt
+	# <add additional imports here>
+	
+	
+	# NewLLM interface                                                                                                                              
+	"""                                                                                                                                                 
+	The NewLLM class extends the BaseModel class and overrides the get_response() method, providing an implementation.                                           
+	"""
+	class NewLLM(BaseLLM):
+	    # ... (attributes and __init__ method)
+	    def __init__ (self, **kwargs):
+		 # add values here directly or if kwargs are specified they are taken from the config file
+	        defaults  = {
+	            "class_name" : "NewLLM",
+	            "model" : "newLLM-bison@06",
+	            "credentials" : "/path/to-my/key.json"
+	        }
+	    # ... Call API and get response from NewLLM
+	    def get_response(self, prompt):
+	        # Implement your language model interaction here
+	        # access credentials file from *self.credentials*
+	        # access model from *self.model*
+	  	# access class_name from *self.class_name*
+	        response =  <"Generated response from  NewLLM model based on prompt">
+	        return response
+	
+	    # ... Parse and Filter raw response from NewLLM and return text/code content
+	    def get_content(self, response):
+	        # Implement content extraction from the response
+	        content = "Extracted content from response"
+	        return content
+	```
  
- </details>
+ 	</details>
 
 2. **Add NewLLM in config.json file, in the 'llms' section**
    - Add LLM in config.json file
 
-   <details>
-	<summary><strong>Add NewLLM to the config.json file</strong></summary>
+	<details>
+	   <summary><strong>Add NewLLM to the config.json file</strong></summary>
 
-```json
-{
-    "Config": {
-        "Multi_LLM": {
-            "llms": [
-                {
-                    "file": "/full-path/NewLLM.py",
-                    "class_name": "NEWLLM",
-                    "model": "chat-bison@001",
-                    "credentials": "/path/to/google/key.json"
-                }, .... ]
+	```json
+	{
+	    "Config": {
+	        "Multi_LLM": {
+	            "llms": [
+	                {
+	                    "file": "/full-path/NewLLM.py",
+	                    "class_name": "NEWLLM",
+	                    "model": "chat-bison@001",
+	                    "credentials": "/path/to/google/key.json"
+	                }, .... ]
+		}
 	}
-}
-```
-
-</details>
+	```
+	
+	</details>
 
 
 3. **Call multillm to run your new LLM or embedd it in your code**:
