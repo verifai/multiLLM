@@ -44,7 +44,7 @@ Edit and add your "credentials" of each *llm* to the [config.json](config.json) 
 
 ```json
  {
-    "organization" : "org-jc8901FDLI0267"",
+    "organization" : "org-jc8901FDLI0267",
     "api_key" : "rt-067FGDiTL834"
 }
   
