@@ -255,7 +255,7 @@ class NewLLM(BaseLLM):
         return content
 ```
  
-</details>
+ </details>
 
 2. **Add NewLLM in config.json file, in the 'llms' section **
 - Add LLM in config.json file
@@ -276,6 +276,8 @@ class NewLLM(BaseLLM):
                 }, .... ]
 	}
 }
+```
+
 </details>
 
 
