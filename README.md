@@ -12,7 +12,7 @@ For further information look to [Running the Multi_LLM Application](#running-the
 `pip3 install multillm`
 
 Edit the [config file](#config-json) to point to your google and openai API keys. 
-Edit and add your "credentials" to the (config.json)[config.json) file:
+Edit and add your "credentials" to the [config.json](config.json) file:
 
 ```json
 "llms": [
@@ -23,6 +23,20 @@ Edit and add your "credentials" to the (config.json)[config.json) file:
                     *"credentials": "/path/to/google/key.json"*
                 },
 ```
+
+<details> 
+    <summary><strong><em> Example google-app-credentials.json</em></strong></summary>
+
+```json
+ {
+  "client_id": "123489-6qr4p.apps.googleusercontent.com",
+  "client_secret": "fx-d3456-tryf0g9f9",
+  "quota_project_id": "my-llm-training",
+  "refresh_token": "1-34GFH89KLwe-eft",
+  "type": "authorized_user"
+  }
+```
+</details>
 
 ### Basic Example
 `multillm -c config.json -prompt "write a python function to determine whether a given number is prime"`
