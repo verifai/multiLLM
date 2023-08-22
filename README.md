@@ -145,9 +145,8 @@ To begin, follow these steps:
 
 1. **Create a New Python File**: Start by creating a new Python file in your project directory '<NewLLM.py>' , or within the appropriate package, where you'll define your custom implementation.
 
-2. **Add LLM in config.json file**: Import the `BaseLLM` class from the provided code. You'll use this as the parent class for your custom implementation.
-
-- Define a new class that inherits from `BaseLLM`. See Example Below: 
+- Define a new class that inherits from `BaseLLM`. Implement the required methods: get_response() and get_content(). The get_response() method should execute your language model with the provided prompt, and the get_content() method should extract relevant content from the response.
+- See Example Below: 
 
 <details> <summary>Example NewLLM.py</summary>
 	
@@ -189,24 +188,27 @@ class NewLLM(BaseLLM):
  
 </details>
 
+2. **Add NewLLM in config.json file, in the 'llms' section **
 - Add LLM in config.json file
 
-3. **Implement Methods**: Implement the *required methods*: `get_response()` and `get_content()`. The `get_response()` method should execute your language model with the provided prompt, and the `get_content()` method should extract relevant content from the response.
+<details>
+	<summary><strong>Add NewLLM to the config.json file</strong></summary>
 
-```python
-class NewLLM(BaseLLM):
-    # ... (attributes and __init__ method as before)
-    
-    def get_response(self, prompt):
-        # Implement your language model interaction here
-        response =  <"Generated response from new LLM model based on prompt">
-        return response
-    
-    def get_content(self, response):
-        # Implement content extraction from the response
-        content = "Extracted content from response"
-        return content
-```
+```json
+{
+    "Config": {
+        "Multi_LLM": {
+            "llms": [
+                {
+                    "file": "/full-path/NewLLM.py",
+                    "class_name": "NEWLLM",
+                    "model": "chat-bison@001",
+                    "credentials": "/path/to/google/key.json"
+                }, .... ]
+	}
+}
+</details>
+
 
 4. **Usage**: You can now use your custom `NewLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
 
