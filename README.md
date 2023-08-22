@@ -108,9 +108,9 @@ To begin, follow these steps:
 
 1. **Create a New Python File**: Start by creating a new Python file in your project directory '<NewLLM.py>' , or within the appropriate package, where you'll define your custom implementation.
 
-2. **Import BaseLLM**: Import the `BaseLLM` class from the provided code. You'll use this as the parent class for your custom implementation.
+2. **Add LLM in config.json file**: Import the `BaseLLM` class from the provided code. You'll use this as the parent class for your custom implementation.
 
-<details> <summary>Example of NewLLM.py</summary>
+<details> <summary>Example NewLLM.py</summary>
 	
 ```python
 import os,sys
@@ -125,13 +125,13 @@ The NewLLM class extends the BaseModel class and overrides the get_response() me
 """
 class NewLLM(BaseLLM):
     #  _implement get_content()_
-    def get_content(self, response):
+    **def get_content(self, response):**
 	""" Return the text content from the response of your LLM """
 	resp = response["choices"][0]["message"]["content"]
         return resp
 
    # The get_response() method takes a prompt and returns the response of the LLM
-   def get_response(self, prompt):
+   **def get_response(self, prompt):**
         # setup prompt for API call here                                                                                                                 
         # Setup Credentials here                                                                                                                         
         if not os.path.exists(self.credentials):
