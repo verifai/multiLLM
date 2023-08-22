@@ -210,9 +210,7 @@ This section will guide you through the process of adding a new LLM by extending
 
 ### Follow these steps to add an new LLM interface
 
-1. **Start by creating a new Python file in your project directory '<NewLLM.py>'** , or within the appropriate package, where you'll define your custom implementation.
-
-- Define a new class that inherits from `BaseLLM`. Implement the required methods: get_response() and get_content(). The get_response() method should execute your language model with the provided prompt, and the get_content() method should extract relevant content from the response.
+1. **Start by creating a new Python file in your project directory '<NewLLM.py>'** , or within the appropriate package, where you'll define a new class that inherits from `BaseLLM`. Implement the required methods: get_response() and get_content(). The get_response() method should execute your language model with the provided prompt, and the get_content() method should extract relevant content from the response.
    - **See Example Below:** 
 
 	<details> <summary>Example NewLLM.py</summary>
@@ -256,7 +254,6 @@ This section will guide you through the process of adding a new LLM by extending
  	</details>
 
 2. **Add NewLLM in config.json file, in the 'llms' section**
-   - Add LLM in config.json file
 
 	<details>
 	   <summary><strong>Add NewLLM to the config.json file</strong></summary>
@@ -295,7 +292,7 @@ print(content)
 
 By extending the provided `BaseLLM` class, you can easily create custom language model implementations tailored to your project's needs. This structured approach ensures consistency and modularity in your codebase, allowing you to focus on the unique aspects of your language model while leveraging the foundational structure provided by `BaseLLM`.
 
-## Example GPT interface
+## Example of the GPT interface (included with multillm release)
 <details>
   <summary><strong>Example Model GPT.py</strong></summary>
 	
