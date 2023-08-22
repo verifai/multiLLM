@@ -213,9 +213,9 @@ This section will guide you through the process of adding a new LLM by extending
 1. **Start by creating a new Python file in your project directory '<NewLLM.py>'** , or within the appropriate package, where you'll define your custom implementation.
 
 - Define a new class that inherits from `BaseLLM`. Implement the required methods: get_response() and get_content(). The get_response() method should execute your language model with the provided prompt, and the get_content() method should extract relevant content from the response.
-- **See Example Below:** 
+   - **See Example Below:** 
 
-<details> <summary>Example NewLLM.py</summary>
+   <details> <summary>Example NewLLM.py</summary>
 	
 ```python
 import os,sys
@@ -256,9 +256,9 @@ class NewLLM(BaseLLM):
  </details>
 
 2. **Add NewLLM in config.json file, in the 'llms' section**
-- Add LLM in config.json file
+   - Add LLM in config.json file
 
-<details>
+   <details>
 	<summary><strong>Add NewLLM to the config.json file</strong></summary>
 
 ```json
@@ -280,7 +280,7 @@ class NewLLM(BaseLLM):
 
 
 3. **Call multillm to run your new LLM or embedd it in your code**:
-- `multillm -c config.json -prompt "wite a function to sort a billion integers"`
+      - `multillm -c config.json -prompt "wite a function to sort a billion integers"`
   
 4. **(Optional) Embedd NewLLM.py in your code**
    - You can now use your custom `NewLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
