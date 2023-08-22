@@ -52,17 +52,83 @@ Edit and add your "credentials" of each *llm* to the [config.json](config.json) 
 </details>
 
 ### Basic Example
-`multillm -c config.json -prompt "write a python function to determine whether a given number is prime"`
+`multillm -c config.json -prompt "write a python function to find a root of the function f using Newton's method"
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
 <details>
 	<summary><strong>Output of the above multillm command</strong></summary>
-	
-#### multi llm response
-1. *GPT's implementation of the sort_integers function is cleaner and more readable compared to BARD's implementation. They use the built-in sorted function which returns a new sorted list, while BARD uses the sort method which modifies the original list in-place. GPT's implementation is more intuitive and follows best practices for Python programming.*
+ 
+```bash
+loading module bard...
+finished loading module bard
+registered model BARD <bard.BARD object at 0x10e4e5b70>
+loading module GPT...
+finished loading module GPT
+registered model GPT <GPT.GPT object at 0x10e4e5d20>
+loaded llms: {'bard': <module 'bard' from '/Users/Verifai/models/bard.py'>, 'GPT': <module 'GPT' from '/Users/Verifai/models/GPT.py'>}
+calling model: BARD
+calling model: GPT
+model chat-bison@001
+```
+*BARD Response:*
+```python
+def newton(f, df, x0, tol=1e-6, maxiter=100):
+    """
+    Find a root of the function f using Newton's method.
 
-2. *BARD's implementation is functional but could be improved. They use the sort method to sort the list in-place, which can be confusing if someone expects the function to return a new sorted list. However, their implementation is still correct and will sort the list correctly.*
+    Args:
+        f: The function to find a root of.
+        df: The derivative of f.
+        x0: The initial guess for the root.
+        tol: The tolerance for convergence.
+        maxiter: The maximum number of iterations to perform.
+        
+
+    Returns:
+        The root of f, or None if no root was found.
+    """
+
+    for i in range(maxiter):
+        x1 = x0 - f(x0) / df(x0)
+        if abs(x1 - x0) < tol:
+            return x1
+        x0 = x1
+    return None
+```
+
+*GPT Response:*
+```python 
+def newton_method(f, f_prime, initial_guess, tol=1e-6, max_iter=100):
+    """
+    Newton's method for finding the root of a function.
+
+    Parameters:
+        f (function): The function for which the root is to be found.
+        f_prime (function): The derivative of f.
+        initial_guess (float): The initial guess for the root.
+        tol (float): The desired tolerance (default 1e-6).
+        max_iter (int): The maximum number of iterations (default 100).
+
+    Returns:
+        float: The root found by Newton's method, or None if no root is found.
+    """
+    x = initial_guess
+    for _ in range(max_iter):
+        fx = f(x)
+        if abs(fx) < tol:
+            return x
+        fpx = f_prime(x)
+        if fpx == 0:
+            return None
+        x -= fx / fpx
+    return None
+```
+	
+#### **MultiLLM** Explanation and Ranking for Example 2:
+* *"BARD's implementation of the `isprime` function is identical to GPT's implementation. Both functions check if a number is prime using the same algorithm. Therefore, both LLMs share the same ranking."*
+
+* *"GPT's implementation of the `isprime` function is correct and follows the standard algorithm for checking prime numbers. While the implementation is identical to BARD's, it still demonstrates proficiency in coding logic and knowledge of basic mathematical operations."*
 </details>
 
 ## Usage
