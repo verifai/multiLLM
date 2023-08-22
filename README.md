@@ -52,7 +52,7 @@ Edit and add your "credentials" of each *llm* to the [config.json](config.json) 
 </details>
 
 ### Basic Example
-`multillm -c config.json -prompt "write a python function to find a root of the function f using Newton's method"
+`multillm -c config.json -prompt "write a python function to find a root of the function f using Newton's method"`
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
