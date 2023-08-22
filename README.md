@@ -12,6 +12,17 @@ For further information look to [Running the Multi_LLM Application](#running-the
 `pip3 install multillm`
 
 Edit the [config file](#config-json) to point to your google and openai API keys. 
+Edit and add your "credentials" to the (config.json)[config.json) file:
+
+```json
+"llms": [
+                {
+                    "file": "bard.py",
+                    "class_name": "BARD",
+                    "model": "chat-bison@001",
+                    *"credentials": "/path/to/google/key.json"*
+                },
+```
 
 ### Basic Example
 `multillm -c config.json -prompt "write a python function to determine whether a given number is prime"`
