@@ -12,7 +12,7 @@ For further information look to [Running the Multi_LLM Application](#running-the
 `pip3 install multillm`
 
 Edit the [config file](#config-json) to point to your google and openai API keys. 
-Edit and add your "credentials" to the [config.json](config.json) file:
+Edit and add your "credentials" of each *llm* to the [config.json](config.json) file:
 
 ```json
 "llms": [
@@ -20,7 +20,7 @@ Edit and add your "credentials" to the [config.json](config.json) file:
                     "file": "bard.py",
                     "class_name": "BARD",
                     "model": "chat-bison@001",
-                    *"credentials": "/path/to/google/key.json"*
+                    * "credentials": "/path/to/google/key.json" *
                 },
 ```
 
@@ -35,6 +35,18 @@ Edit and add your "credentials" to the [config.json](config.json) file:
   "refresh_token": "1-34GFH89KLwe-eft",
   "type": "authorized_user"
   }
+```
+</details>
+
+<details> 
+    <summary><strong><em> Example openai-credentials.json</em></strong></summary>
+
+```json
+ {
+    "organization" : "org-jc8901FDLI0267"",
+    "api_key" : "rt-067FGDiTL834"
+}
+  
 ```
 </details>
 
