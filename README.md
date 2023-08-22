@@ -123,9 +123,9 @@ It follows the structure outlined below:
 
 To run the Multi_LLM application, follow these steps:
 
-1. Download the [config.json](config.json) file with the desired language model configurations.
-
-2. Open a terminal and navigate to the directory containing the `multi_llm.py` script.
+1. pip install multillm
+   
+2. Download the [config.json](config.json) file with the desired language model configurations.
 
 3. Execute the following command, replacing `<config_file>` with the actual path to your configuration file and `<prompt_text>` with the desired prompt text:
    ```bash
@@ -133,7 +133,6 @@ To run the Multi_LLM application, follow these steps:
    ```
 
 4. The application will run the specified language models concurrently, process their responses using the provided prompt, and display the results.
-
 
 
 ### Adding a new LLM interface
@@ -147,6 +146,8 @@ To begin, follow these steps:
 1. **Create a New Python File**: Start by creating a new Python file in your project directory '<NewLLM.py>' , or within the appropriate package, where you'll define your custom implementation.
 
 2. **Add LLM in config.json file**: Import the `BaseLLM` class from the provided code. You'll use this as the parent class for your custom implementation.
+
+- Define a new class that inherits from `BaseLLM`. See Example Below: 
 
 <details> <summary>Example NewLLM.py</summary>
 	
@@ -162,56 +163,33 @@ from multillm.Prompt import Prompt
 The NewLLM class extends the BaseModel class and overrides the get_response() method, providing an implementation.                                           
 """
 class NewLLM(BaseLLM):
-    #  _implement get_content()_
-    **def get_content(self, response):**
-	""" Return the text content from the response of your LLM """
-	resp = response["choices"][0]["message"]["content"]
-        return resp
+    # ... (attributes and __init__ method)
+    def __init__ (self, **kwargs):
+	 # add values here directly or if kwargs are specified they are taken from the config file
+        defaults  = {
+            "class_name" : "NewLLM",
+            "model" : "newLLM-bison@06",
+            "credentials" : "/path/to-my/key.json"
+        }
+    # ... Call API and get response from NewLLM
+    def get_response(self, prompt):
+        # Implement your language model interaction here
+        # access credentials file from *self.credentials*
+        # access model from *self.model*
+  	# access class_name from *self.class_name*
+        response =  <"Generated response from  NewLLM model based on prompt">
+        return response
 
-   # The get_response() method takes a prompt and returns the response of the LLM
-   **def get_response(self, prompt):**
-        # setup prompt for API call here                                                                                                                 
-        # Setup Credentials here                                                                                                                         
-        if not os.path.exists(self.credentials):
-            print('error (multi_llm): could not find credentials: {0}' .format(self.credentials))
-            return
-        # Open credentials file for reading                                                                                                                 
-        try:
-            with open(self.credentials, 'r') as file:
-                # Load the JSON data from the file              
-   		# add credentials to your API
-        except Exception as e:
-	    print('(multi_llm) error: could not load credentials {0} : {1}' .format(self.credentials,str(e)))
-	    return
-       # do API call to NewLLM below                                                                                                                                 response = newllm.ChatCompletion.create(
-	    model = self.model
-        )
-        if response:
-            return(self.get_content(response))
-        else:
-	    return None
-
+    # ... Parse and Filter raw response from NewLLM and return text/code content
+    def get_content(self, response):
+        # Implement content extraction from the response
+        content = "Extracted content from response"
+        return content
 ```
+ 
 </details>
 
-Now that you've imported the `BaseLLM` class, you can add a new LLM. Follow these steps:
-
-1. **Create Your Class**: Define a new class that inherits from `BaseLLM`.
-
-```python
-class NewLLM(BaseLLM):
-    pass
-```
-
-2. **Customize Attributes**: Customize the attributes of your custom class to match the requirements of your language model. You can add new attributes or modify existing ones as needed.
-
-```python
-class NewLLM(BaseLLM):
-   
-    def __init__(self, **kwargs):
-        # Customize initialization as needed
-        super().__init__(**kwargs)
-```
+- Add LLM in config.json file
 
 3. **Implement Methods**: Implement the *required methods*: `get_response()` and `get_content()`. The `get_response()` method should execute your language model with the provided prompt, and the `get_content()` method should extract relevant content from the response.
 
