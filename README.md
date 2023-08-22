@@ -204,18 +204,16 @@ To run the Multi_LLM application, follow these steps:
 4. The application will run the specified language models concurrently, process their responses using the provided prompt, and display the results.
 
 
-### Adding a new LLM interface
+## Adding a new LLM interface
 
 This section will guide you through the process of adding a new LLM by extending the `BaseLLM` class and customizing it to fit the requirements of your specific language model.
 
-### Getting Started
+### Follow these steps to add an new LLM interface
 
-To begin, follow these steps:
-
-1. **Create a New Python File**: Start by creating a new Python file in your project directory '<NewLLM.py>' , or within the appropriate package, where you'll define your custom implementation.
+1. **Start by creating a new Python file in your project directory '<NewLLM.py>'** , or within the appropriate package, where you'll define your custom implementation.
 
 - Define a new class that inherits from `BaseLLM`. Implement the required methods: get_response() and get_content(). The get_response() method should execute your language model with the provided prompt, and the get_content() method should extract relevant content from the response.
-- See Example Below: 
+- **See Example Below:** 
 
 <details> <summary>Example NewLLM.py</summary>
 	
@@ -257,7 +255,7 @@ class NewLLM(BaseLLM):
  
  </details>
 
-2. **Add NewLLM in config.json file, in the 'llms' section **
+2. **Add NewLLM in config.json file, in the 'llms' section**
 - Add LLM in config.json file
 
 <details>
@@ -281,7 +279,11 @@ class NewLLM(BaseLLM):
 </details>
 
 
-4. **Usage**: You can now use your custom `NewLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
+3. **Call multillm to run your new LLM or embedd it in your code**:
+- `multillm -c config.json -prompt "wite a function to sort a billion integers"`
+  
+4. **(Optional) Embedd NewLLM.py in your code**
+   - You can now use your custom `NewLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
 
 ```python
 custom_llm = NewLLM(model="custom_model", credentials="your_credentials")
