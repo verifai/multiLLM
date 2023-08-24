@@ -8,6 +8,8 @@ VerifAI Implementation of invoking multiple large language models concurrently a
 For further information look to [Running the Multi_LLM Application](#running-the-application) inside of [Useage](#useage)
 
 ### Installation
+Download [requirements.txt](requirements.txt)
+`pip3 install requirements.txt`
 
 `pip3 install multillm`
 
