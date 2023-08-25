@@ -1,7 +1,8 @@
 # ==============================================================================
 # Copyright 2023 VerifAI All Rights Reserved.
 # https://www.verifai.ai
-# License: 
+# License: The MIT License
+# Copyright (c) VerifAI Inc, https://www.verifai.ai
 #
 # ==============================================================================
 

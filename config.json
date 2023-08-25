@@ -12,14 +12,14 @@
                     "file" : "models/bard.py",
                     "class_name": "BARD",
                     "model" : "chat-bison@001",
-                    "credentials" : "/Users/sandeep/.config/gcloud/application_default_credentials.json"
+                    "credentials" : "<path-to-google-credentials>/bard.json"
 
                 },
                 {
                     "file" : "models/GPT.py",
                     "class_name": "GPT",
                     "model" : "gpt-3.5-turbo",
-                    "credentials" : "/Users/sandeep/.config/openai/key.json"
+                    "credentials" : "<path-to-openai-credentials>/key.json"
 
                 }
             ]

@@ -37,22 +37,7 @@ class BARD(BaseLLM):
     # Get Text
     def get_content(self, response):
     
-        """ Get the text from the response of an LLM
-        e.g.: openai returns the following response, this method should return the 'content'.
-        {
-          "choices":
-             [{
-                 {
-               "finish_reason": "stop",
-                "index": 0,
-                "message": {
-                    "content": "from datetime import date\ntoday = date.today()\nprint(\"Today's date is:\", today)",
-                    "role": "assistant"
-                }
-                 }}]
-        }
-        """
-        """ return content """
+        """ Get the text from the response of an LLM """
         return str(response)
     
     
@@ -62,6 +47,11 @@ class BARD(BaseLLM):
         """Predict using a Large Language Model."""
         project_id = "verifai-ml-training"
         location = "us-central1"
+        
+        """ Get credentials file set in the config, and set appropriate variables for your model """
+        if not os.path.exists(self.credentials):
+            print("({0}) error:  credential file doesn't exist" .format(self.__class__.__name__))
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.credentials
 
         vertexai.init(project=project_id, location=location)
         print('model {0}' .format(self.model))

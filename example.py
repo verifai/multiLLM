@@ -11,6 +11,7 @@ import os
 import argparse
 import ast
 import re
+import json
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "."))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
@@ -27,6 +28,9 @@ from multillm.MultiLLM import MultiLLM
 
 
 def main():
+    # Disable printing to stdout temporarily
+    sys.stdout = open(os.devnull, 'w')
+
     global redisConnected
 
     parser = argparse.ArgumentParser()
@@ -136,6 +140,9 @@ def main():
         rank = None
 
     # Call the model
-    r = multi_llm.run(p, action_chain, rank)
-    print("multi llm response {0}".format(r))
-
+    r = multi_llm.run(p, action_chain, rank, args.taskid)
+    # Restore stdout and print
+    res = {"result": r}
+    sys.stdout = sys.__stdout__
+    print(json.dumps(res))
+    #print("multi llm response {0}".format(r))

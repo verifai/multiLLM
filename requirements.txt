@@ -1,2 +1,5 @@
+transformers
+redis
 openai
 vertexai
+google-cloud-aiplatform

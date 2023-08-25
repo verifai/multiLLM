@@ -1,7 +1,8 @@
 # ==============================================================================
 # Copyright 2023 VerifAI All Rights Reserved.
 # https://www.verifai.ai
-# License: 
+# License: The MIT License
+# Copyright (c) VerifAI Inc, https://www.verifai.ai
 #
 # ==============================================================================
 
@@ -39,35 +40,28 @@ from Action import *
 
 from Redis import *
 
-redisConnected = True
-try:
-    redis_conn = Redis.connection
-except Exception as e:
-    log.warn('redis disabled: {0}' .format(str(e)))
-    redisConnected = False
-
-
 # MultiLLM class
 class MultiLLM(object):
 
     model_registry = {}
+    config_file = None
+    config_data = None
 
     def __init__(self, config=None, models=[], model_names=[]):
 
         self.models = models
         self.model_names = model_names
+        MultiLLM.config_file = config 
         
         #registry = Models.model_registry
         if config:
             self.models = self.load_models( config) #reads data
         
-    
-
-    def run(self, prompt, action_chain, rank_chain):
+   
+    def run(self, prompt, action_chain, rank_chain, taskid=None):
         """
         """
         responses = {}
-
         with multiprocessing.Pool() as pool:
             # Create a list of (model_name, Future) tuples for each model response
             model_and_future = []
@@ -84,6 +78,9 @@ class MultiLLM(object):
                 try:
                     response = future.get()
                     responses[model_name] = response
+                    meta_data = {"type": "response", "model_name": model_name}
+                    #publish to redis
+                    Redis.publish_to_redis(type="multillm", taskid=taskid, result=response, meta_data=meta_data)
                 except Exception as exc:
                     print(f"(MultiLLM) Error: occurred: {exc}")
                     responses[model_name] = f"(MultiLLM) Error: occurred: {exc}"
@@ -116,21 +113,17 @@ class MultiLLM(object):
         if not rank_chain:
             return responses
         else:
-            return rank_chain.apply(responses)
+            rank_response = rank_chain.apply(responses)
+            Redis.publish_to_redis(type="multillm", taskid=taskid, result=rank_response, meta_data={"type": "ranking"})
+            return rank_response
 
 
     
     def load_models(self, config):
         """ Load Models from a config file """
         
-        if config:
-            try:
-                with open(config) as f:
-                    conf_data = json.load(f)
-                
-            except Exception as e:
-                print("could not read config file {0} : {1}" .format(config, str(e)))
-                return
+        # Read Config file
+        conf_data = MultiLLM.read_config(config)
 
         loaded_llms = {}
         if conf_data is not None:
@@ -217,3 +210,24 @@ class MultiLLM(object):
         
 
 
+    @staticmethod
+    def read_config(config=None, force=False):
+        
+        if MultiLLM.config_data and force==False:
+            # Return Existing Config_data
+            return MultiLLM.config_data
+        
+        cf = config
+        if not cf:
+            cf = MultiLLM.config_file
+        
+        if cf:
+            try:
+                with open(cf) as f:
+                    MultiLLM.config_data = json.load(f)
+                
+            except Exception as e:
+                print("could not read config file {0} : {1}" .format(cf, str(e)))
+                return
+            
+        return MultiLLM.config_data

@@ -29,7 +29,8 @@ class Rank(Action):
                         # Check if relative file path works.
                         rel_path, cfile = script_path = os.path.split(os.path.abspath(__file__))
                         callback_file_path = os.path.join(rel_path, callback_file)
-                    
+                    else:
+                        callback_file_path = callback_file
                     
             except Exception as e:
                 print('(Rank) ERROR: no rank_callback_file : {0}' .format(str(e)))
