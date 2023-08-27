@@ -62,6 +62,7 @@ class MultiLLM(object):
         """
         """
         responses = {}
+        
         with multiprocessing.Pool() as pool:
             # Create a list of (model_name, Future) tuples for each model response
             model_and_future = []
@@ -77,10 +78,12 @@ class MultiLLM(object):
             for model_name, future in model_and_future:
                 try:
                     response = future.get()
+                    #print("response {0} : {1}" .format(model_name, response))
                     responses[model_name] = response
                     meta_data = {"type": "response", "model_name": model_name}
                     #publish to redis
-                    Redis.publish_to_redis(type="multillm", taskid=taskid, result=response, meta_data=meta_data)
+                    if taskid:
+                        Redis.publish_to_redis(type="multillm", taskid=taskid, result=response, meta_data=meta_data)
                 except Exception as exc:
                     print(f"(MultiLLM) Error: occurred: {exc}")
                     responses[model_name] = f"(MultiLLM) Error: occurred: {exc}"
@@ -114,7 +117,8 @@ class MultiLLM(object):
             return responses
         else:
             rank_response = rank_chain.apply(responses)
-            Redis.publish_to_redis(type="multillm", taskid=taskid, result=rank_response, meta_data={"type": "ranking"})
+            if taskid:
+                Redis.publish_to_redis(type="multillm", taskid=taskid, result=rank_response, meta_data={"type": "ranking"})
             return rank_response
 
 

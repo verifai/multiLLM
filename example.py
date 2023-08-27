@@ -116,6 +116,7 @@ def main():
                 print("Syntax error parsing code")
             print("No matches")
             return None
+            #return "your prompt returned no code"
 
         else:
             return matches[0]

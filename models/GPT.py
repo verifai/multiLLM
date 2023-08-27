@@ -50,9 +50,17 @@ class GPT(BaseLLM):
         """
         """ return content """
         resp = response["choices"][0]["message"]["content"]
-        print('GPT response {0}' .format(resp))
-        return resp
-    
+        
+        try:
+            if self.is_code(resp):
+                print('{0} response {1}' .format(self.__class__.__name__,resp))
+                return resp
+            else:
+                #print('GPT is not code')
+                return('your prompt returned no code')
+        except Exception as e:
+            #print("error is_code() {0}" .format(str(e)))
+            return('our prompt returned no code')
     
     def get_response(self, prompt):
         
@@ -86,6 +94,7 @@ class GPT(BaseLLM):
             print('(multi_llm) error: could not load credentials {0} : {1}' .format(self.credentials,str(e)))
             return
                     
+        print('model {0}' .format(self.model))
         # do API call
         response = openai.ChatCompletion.create(
             model = self.model,
@@ -94,9 +103,8 @@ class GPT(BaseLLM):
         
         # return response
         #print("response {0}" .format(response))
-        if response:
-            
-            return(self.get_content(response))
-        else:
+        if not response:
             return response
-
+        else: 
+            return(self.get_content(response))
+          

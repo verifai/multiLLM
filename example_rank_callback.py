@@ -64,9 +64,17 @@ def rank_CB(responses, config=None):
             #{ "role": "system", "content":"You are an LLM tasked with ranking other LLMs, given the following LLMs and their responses, rank them. Response only with a name and explanation in a python list"}
     ]
 
+    
+    no_code = False
     for llm,response in responses.items():
+        #print('llm: {0} Response {1}' .format(llm, response))
+        if not response or "returned no code" in response:
+            no_code = True
         messages.append({"role": "user", "content": f"{llm}: {response}"})
 
+    if no_code:
+        return('Sorry, we can only rank code at the moment!')
+    
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages

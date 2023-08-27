@@ -1,7 +1,7 @@
 import os,sys
 import json
-from BaseLLM import BaseLLM
-import Prompt
+from multillm.BaseLLM import BaseLLM
+from multillm.Prompt import Prompt
 
 """ Google vertexai imports """
 import vertexai
@@ -38,7 +38,17 @@ class BARD(BaseLLM):
     def get_content(self, response):
     
         """ Get the text from the response of an LLM """
-        return str(response)
+        try:
+            if self.is_code(str(response)):
+                print("{0} response: {1}" .format(self.__class__.__name__,str(response)))
+                return str(response)
+            else:
+                #print('BARD is not code')
+                return('your prompt returned no code')
+        except Exception as e:
+            #print("error is_code() {0}" .format(str(e)))
+            return('your prompt returned no code')
+        
     
     
     def get_response(self, prompt: Prompt):
@@ -71,12 +81,12 @@ class BARD(BaseLLM):
         try:
             """ Call API """
             response=chat.send_message( prompt.get_string(), **parameters)
-            print('bard response {0}' .format(response))
+            
         except Exception as e:
             print('error calling bard: {0}' .format(str(e)))
 
         if not response:
             return response
-        else:
-            return self.get_content(response)
+        else: 
+            return(self.get_content(response))
 

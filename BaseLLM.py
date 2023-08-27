@@ -72,6 +72,16 @@ class BaseLLM(object):
         # Implementer needs to write interface for this
         return
 
+    def is_code(self, response):
+        import re
+        code_pattern = re.compile(r'^\s{4,}.+', re.MULTILINE)
+        code_blocks = code_pattern.findall(response)
+
+        if code_blocks:
+            return True
+        else:
+            return False
+
     
 
     
