@@ -12,19 +12,126 @@ For further information look to [Running the Multi_LLM Application](#running-the
 `pip3 install multillm`
 
 Edit the [config file](#config-json) to point to your google and openai API keys. 
+Edit and add your "credentials" of each *llm* to the [config.json](config.json) file:
+
+```json
+"llms": [
+                {
+                    "file": "bard.py",
+                    "class_name": "BARD",
+                    "model": "chat-bison@001",
+                    * "credentials": "/path/to/google/key.json" *
+                },
+```
+
+<details> 
+    <summary><strong><em> Example google-app-credentials.json</em></strong></summary>
+
+```json
+ {
+  "client_id": "123489-6qr4p.apps.googleusercontent.com",
+  "client_secret": "fx-d3456-tryf0g9f9",
+  "quota_project_id": "my-llm-training",
+  "refresh_token": "1-34GFH89KLwe-eft",
+  "type": "authorized_user"
+  }
+```
+</details>
+
+
+<details> 
+    <summary><strong><em> Example openai-credentials.json</em></strong></summary>
+
+```json
+ {
+    "organization" : "org-jc8901FDLI0267",
+    "api_key" : "rt-067FGDiTL834"
+}
+  
+```
+</details>
 
 ### Basic Example
-`multillm -c config.json -prompt "write a python function to determine whether a given number is prime"`
+`multillm -c config.json -prompt "write a python function to find a root of the function f using Newton's method"`
 
 The above example will run the [config.json](config.json) with the provided prompt. 
 
 <details>
 	<summary><strong>Output of the above multillm command</strong></summary>
-	
-#### multi llm response
-1. *GPT's implementation of the sort_integers function is cleaner and more readable compared to BARD's implementation. They use the built-in sorted function which returns a new sorted list, while BARD uses the sort method which modifies the original list in-place. GPT's implementation is more intuitive and follows best practices for Python programming.*
+ 
+```bash
+loading module bard...
+finished loading module bard
+registered model BARD <bard.BARD object at 0x10e4e5b70>
+loading module GPT...
+finished loading module GPT
+registered model GPT <GPT.GPT object at 0x10e4e5d20>
+loaded llms: {'bard': <module 'bard' from '/Users/Verifai/models/bard.py'>, 'GPT': <module 'GPT' from '/Users/Verifai/models/GPT.py'>}
+calling model: BARD
+calling model: GPT
+model chat-bison@001
+```
+*BARD Response:*
+```python
+def newton(f, df, x0, tol=1e-6, maxiter=100):
+    """
+    Find a root of the function f using Newton's method.
 
-2. *BARD's implementation is functional but could be improved. They use the sort method to sort the list in-place, which can be confusing if someone expects the function to return a new sorted list. However, their implementation is still correct and will sort the list correctly.*
+    Args:
+        f: The function to find a root of.
+        df: The derivative of f.
+        x0: The initial guess for the root.
+        tol: The tolerance for convergence.
+        maxiter: The maximum number of iterations to perform.
+        
+
+    Returns:
+        The root of f, or None if no root was found.
+    """
+
+    for i in range(maxiter):
+        x1 = x0 - f(x0) / df(x0)
+        if abs(x1 - x0) < tol:
+            return x1
+        x0 = x1
+    return None
+```
+
+*GPT Response:*
+```python 
+def newton_method(f, f_prime, initial_guess, tol=1e-6, max_iter=100):
+    """
+    Newton's method for finding the root of a function.
+
+    Parameters:
+        f (function): The function for which the root is to be found.
+        f_prime (function): The derivative of f.
+        initial_guess (float): The initial guess for the root.
+        tol (float): The desired tolerance (default 1e-6).
+        max_iter (int): The maximum number of iterations (default 100).
+
+    Returns:
+        float: The root found by Newton's method, or None if no root is found.
+    """
+    x = initial_guess
+    for _ in range(max_iter):
+        fx = f(x)
+        if abs(fx) < tol:
+            return x
+        fpx = f_prime(x)
+        if fpx == 0:
+            return None
+        x -= fx / fpx
+    return None
+```
+	
+### **MultiLLM** Explanation and Ranking for :
+    
+* *"The **GPT** implementation of the Newton's method function (newton_method) is well-documented with clear parameter explanations and return format. It also includes appropriate input validation checks and handles the case when the derivative is 0. Overall, it is a comprehensive and robust implementation."*
+    
+* *"The **BARD** implementation of the Newton's method function (newton) is also well-documented and accepts the necessary parameters. However, it lacks input validation checks, such as when the derivative is 0, and does not provide an explicit return value when no root is found. It can be improved by addressing these limitations."*
+    
+*"Based on these factors, I would rank GPT higher than BARD in terms of the clarity, completeness, and robustness of the implementation."*
 </details>
 
 ## Usage
@@ -85,9 +192,9 @@ It follows the structure outlined below:
 
 To run the Multi_LLM application, follow these steps:
 
-1. Download the [config.json](config.json) file with the desired language model configurations.
-
-2. Open a terminal and navigate to the directory containing the `multi_llm.py` script.
+1. pip install multillm
+   
+2. Download the [config.json](config.json) file with the desired language model configurations.
 
 3. Execute the following command, replacing `<config_file>` with the actual path to your configuration file and `<prompt_text>` with the desired prompt text:
    ```bash
@@ -97,62 +204,83 @@ To run the Multi_LLM application, follow these steps:
 4. The application will run the specified language models concurrently, process their responses using the provided prompt, and display the results.
 
 
+## Adding a new LLM interface
 
-### Implementing Your Own BaseLLM
+This section will guide you through the process of adding a new LLM by extending the `BaseLLM` class and customizing it to fit the requirements of your specific language model.
 
-This section will guide you through the process of creating your own `BaseLLM` implementation by extending the existing class and customizing it to fit the requirements of your specific language model.
+### Follow these steps to add an new LLM interface
 
-### Getting Started
+1. **Start by creating a new Python file in your project directory '<NewLLM.py>'** , or within the appropriate package, where you'll define a new class that inherits from `BaseLLM`. Implement the required methods: get_response() and get_content(). The get_response() method should execute your language model with the provided prompt, and the get_content() method should extract relevant content from the response.
+   - **See Example Below:** 
 
-To begin, follow these steps:
+	<details> <summary>Example NewLLM.py</summary>
+	
+	```python
+	import os,sys
+	from multillm.BaseLLM import BaseLLM
+	from multillm.Prompt import Prompt
+	# <add additional imports here>
+	
+	
+	# NewLLM interface                                                                                                                              
+	"""                                                                                                                                                 
+	The NewLLM class extends the BaseModel class and overrides the get_response() method, providing an implementation.                                           
+	"""
+	class NewLLM(BaseLLM):
+	    # ... (attributes and __init__ method)
+	    def __init__ (self, **kwargs):
+		 # add values here directly or if kwargs are specified they are taken from the config file
+	        defaults  = {
+	            "class_name" : "NewLLM",
+	            "model" : "newLLM-bison@06",
+	            "credentials" : "/path/to-my/key.json"
+	        }
+	    # ... Call API and get response from NewLLM
+	    def get_response(self, prompt):
+	        # Implement your language model interaction here
+	        # access credentials file from *self.credentials*
+	        # access model from *self.model*
+	  	# access class_name from *self.class_name*
+	        response =  <"Generated response from  NewLLM model based on prompt">
+	        return response
+	
+	    # ... Parse and Filter raw response from NewLLM and return text/code content
+	    def get_content(self, response):
+	        # Implement content extraction from the response
+	        content = "Extracted content from response"
+	        return content
+	```
+ 
+ 	</details>
 
-1. **Create a New Python File**: Start by creating a new Python file in your project directory, or within the appropriate package, where you'll define your custom `BaseLLM` implementation.
+2. **Add NewLLM in config.json file, in the 'llms' section**
 
-2. **Import BaseLLM**: Import the `BaseLLM` class from the provided code. You'll use this as the parent class for your custom implementation.
+	<details>
+	   <summary><strong>Add NewLLM to the config.json file</strong></summary>
 
-```python
-from multillm.BaseLLM import BaseLLM
-```
+	```json
+	{
+	    "Config": {
+	        "Multi_LLM": {
+	            "llms": [
+	                {
+	                    "file": "/full-path/NewLLM.py",
+	                    "class_name": "NEWLLM",
+	                    "model": "chat-bison@001",
+	                    "credentials": "/path/to/google/key.json"
+	                }, .... ]
+		}
+	}
+	```
+	
+	</details>
 
-### Adding a new LLM interface
 
-Now that you've imported the `BaseLLM` class, you can add a new LLM. Follow these steps:
-
-1. **Create Your Class**: Define a new class that inherits from `BaseLLM`.
-
-```python
-class NewLLM(BaseLLM):
-    pass
-```
-
-2. **Customize Attributes**: Customize the attributes of your custom class to match the requirements of your language model. You can add new attributes or modify existing ones as needed.
-
-```python
-class NewLLM(BaseLLM):
-   
-    def __init__(self, **kwargs):
-        # Customize initialization as needed
-        super().__init__(**kwargs)
-```
-
-3. **Implement Methods**: Implement the *required methods*: `get_response()` and `get_content()`. The `get_response()` method should execute your language model with the provided prompt, and the `get_content()` method should extract relevant content from the response.
-
-```python
-class NewLLM(BaseLLM):
-    # ... (attributes and __init__ method as before)
-    
-    def get_response(self, prompt):
-        # Implement your language model interaction here
-        response =  <"Generated response from new LLM model based on prompt">
-        return response
-    
-    def get_content(self, response):
-        # Implement content extraction from the response
-        content = "Extracted content from response"
-        return content
-```
-
-4. **Usage**: You can now use your custom `NewLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
+3. **Call multillm to run your new LLM or embedd it in your code**:
+      - `multillm -c config.json -prompt "wite a function to sort a billion integers"`
+  
+4. **(Optional) Embedd NewLLM.py in your code**
+   - You can now use your custom `NewLLM` class in your application code. Instantiate it, call its methods, and integrate it into your application's workflow.
 
 ```python
 custom_llm = NewLLM(model="custom_model", credentials="your_credentials")
@@ -164,7 +292,7 @@ print(content)
 
 By extending the provided `BaseLLM` class, you can easily create custom language model implementations tailored to your project's needs. This structured approach ensures consistency and modularity in your codebase, allowing you to focus on the unique aspects of your language model while leveraging the foundational structure provided by `BaseLLM`.
 
-## Example GPT interface
+## Example of the GPT interface (included with multillm release)
 <details>
   <summary><strong>Example Model GPT.py</strong></summary>
 	
