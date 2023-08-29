@@ -2,6 +2,7 @@
 
 VerifAI Implementation of invoking multiple large language models concurrently and ranking results
 
+******
 
 ## Quick-Start
 
@@ -134,6 +135,8 @@ def newton_method(f, f_prime, initial_guess, tol=1e-6, max_iter=100):
 *"Based on these factors, I would rank GPT higher than BARD in terms of the clarity, completeness, and robustness of the implementation."*
 </details>
 
+******
+
 ## Usage
 
 The Multi_LLM application provides a powerful and efficient solution for invoking multiple large language models (LLMs) concurrently and effectively managing their outputs. This section guides you through the steps required to run the application using various command-line options and configuration files.
@@ -203,6 +206,7 @@ To run the Multi_LLM application, follow these steps:
 
 4. The application will run the specified language models concurrently, process their responses using the provided prompt, and display the results.
 
+******
 
 ## Adding a new LLM interface
 
@@ -292,6 +296,8 @@ print(content)
 
 By extending the provided `BaseLLM` class, you can easily create custom language model implementations tailored to your project's needs. This structured approach ensures consistency and modularity in your codebase, allowing you to focus on the unique aspects of your language model while leveraging the foundational structure provided by `BaseLLM`.
 
+******
+
 ## Example of the GPT interface (included with multillm release)
 <details>
   <summary><strong>Example Model GPT.py</strong></summary>
@@ -368,7 +374,9 @@ class GPT(BaseLLM):
             return response
 ```
 </details>
- 
+
+******
+
 ## Config JSON
 
 ### Using the `config.json` File
@@ -405,8 +413,9 @@ To get started, follow these steps to configure your `config.json` file:
     }
 }
 ```
+******
 
-### Loading Models Using Multi_LLM
+### Loading Models Using MultiLLM
 
 After creating the `config.json` file, you can use the "Multi_LLM" framework to load and utilize the configured models in your application. Follow these steps:
 
@@ -455,7 +464,7 @@ action_chain = action1.then(action2)
 ```
 What we did was create some actions that are simple I/O operations on data. We can then chain them together using the `then()` method mentioned above. The order of operations for then is left to right, in this case action1 will go first then action2. These actions can be tailored to your own specification, since the actions are serial, you can specify the information that is going to be passed into the function and what information will be returned.
 
-After you have created the action chain you can pass this into the `Multi_LLM.run()` method and run.
+After you have created the action chain you can pass this into the `MultiLLM.run()` method and run.
 
 ### Action Chain
 
@@ -474,18 +483,18 @@ def print_llms(dictionary):
 rank_object = Rank(operation=print_llms)
 
 # Running the LLM, assuming an instance of 
-# Multi_LLM named mLLM
+# MultiLLM named mLLM
 results = mLLLM.run(prompt, action_chain, rank_object)
 ```
 In the above code we are doing very similar actions as those seen above. The methodoly is the same. In this case we only have a single object, so instead of creating a `rank_chain` we simply pass in our single instantiated object.
 ## Architecture
 ### High Level Overview
 ![alt](images/Multi_LLM_1.png)
-### Multi_LLM Class
+### MultiLLM Class
 This is the highest level, here we can instantiate MultiLLM objects using either config files (see [config files](###Config-Files)) or manually instantiating a custom or hosted LLM. 
 In this class we call multiple LLMs concurrently and then we can operate on the results of each in parallel using the [Action Class](###Action-Class).
 
-The "Multi_LLM" Python code provides a versatile framework for managing and orchestrating multiple language models (LLMs) within a single application. This code is designed to enhance the efficiency of working with language models by enabling concurrent execution, response processing, and model loading from configuration files. The key features and components of the code include:
+The "MultiLLM" Python code provides a versatile framework for managing and orchestrating multiple language models (LLMs) within a single application. This code is designed to enhance the efficiency of working with language models by enabling concurrent execution, response processing, and model loading from configuration files. The key features and components of the code include:
 
 - **Concurrent Model Execution:** The code allows you to run multiple language models concurrently, facilitating efficient utilization of computational resources. This is particularly useful for scenarios that involve processing multiple prompts or tasks simultaneously.
 
@@ -497,7 +506,8 @@ The "Multi_LLM" Python code provides a versatile framework for managing and orch
 
 - **Simplified Model Registration:** The code includes a straightforward method to register models within the framework. This allows for the inclusion of custom LLM implementations while ensuring that the models are appropriately organized and accessible for execution.
 
-By using the "Multi_LLM" Python code, developers can streamline their interactions with multiple language models, seamlessly integrating them into various applications or projects. The code promotes modularity, reusability, and parallelism in working with language models, ultimately enhancing the user experience and productivity.
+By using the "MultiLLM" Python code, developers can streamline their interactions with multiple language models, seamlessly integrating them into various applications or projects. The code promotes modularity, reusability, and parallelism in working with language models, ultimately enhancing the user experience and productivity.
+
 
 ### BaseLLM
 
@@ -514,6 +524,8 @@ Key features and components of the code include:
 - **Structured Framework:** The code encapsulates a structured framework that abstracts common functionalities of language models. By inheriting from the `BaseLLM` class, developers can focus on implementing model-specific interactions while leveraging the established structure for attribute handling and method placeholders.
 
 `BaseLLM` aims to streamline the development of specific language model implementations by providing a consistent structure and standardized attributes. Developers can extend this base class to create custom language model classes that seamlessly integrate into the broader application ecosystem. This modular approach promotes reusability, maintainability, and consistent design patterns when working with various language models.
+
+******
 
 ## Contribution
 
