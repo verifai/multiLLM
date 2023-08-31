@@ -74,14 +74,13 @@ class BaseLLM(object):
 
     def is_code(self, response):
         import re
-        code_pattern = re.compile(r'^\s{4,}.+', re.MULTILINE)
-        code_blocks = code_pattern.findall(response)
-
-        if code_blocks:
+        regex_pattern = r"```(?:[a-zA-Z]+)?(?:[a-zA-Z]+\n)?([^`]+)(?:```)?"
+        matches = re.findall(regex_pattern, response)
+        if matches:
             return True
         else:
             return False
-
+    
     
 
     

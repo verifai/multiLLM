@@ -100,7 +100,7 @@ def main():
                 return False
             return True
 
-        regex_pattern = r"```(?:python)?(?:[a-zA-Z]+\n)?([^`]+)(?:```)?"
+        regex_pattern = r"```(?:[a-zA-Z]+)?(?:[a-zA-Z]+\n)?([^`]+)(?:```)?"
 
         import re
 
@@ -119,7 +119,7 @@ def main():
             #return "your prompt returned no code"
 
         else:
-            return matches[0]
+            return matches
 
     # Action Operation 2: Print the data
     def print_it(data):
