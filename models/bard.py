@@ -9,9 +9,9 @@ from vertexai.preview.language_models import TextGenerationModel
 from vertexai.preview.language_models import ChatModel, InputOutputTextPair
 
 
-# Google BARD gpt interface
+# Google BARD interface
 """
-The GPT class extends the BaseModel class and overrides the get_response() method, providing an implementation.
+The BARD class extends the BaseModel class and overrides the get_response() method, providing an implementation.
 The get_response() method takes a response parameter and returns the content of the first response in the given response object.
 """
 class BARD(BaseLLM):
@@ -51,7 +51,7 @@ class BARD(BaseLLM):
         
     
     
-    def get_response(self, prompt: Prompt):
+    def get_response(self, prompt: Prompt, taskid=None):
         
         
         """Predict using a Large Language Model."""
@@ -88,5 +88,8 @@ class BARD(BaseLLM):
         if not response:
             return response
         else: 
-            return(self.get_content(response))
+            content = self.get_content(response)
+            if content and taskid:
+                self.publish_to_redis(content, taskid)
+            return(content)
 

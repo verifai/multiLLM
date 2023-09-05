@@ -21,6 +21,12 @@
                     "model" : "gpt-3.5-turbo",
                     "credentials" : "<path-to-openai-credentials>/key.json"
 
+                },
+                {
+                    "file" : "models/LLAMA2.py",
+                    "class_name": "LLAMA2",
+                    "model" : "llama2",
+                    "credentials" : null
                 }
             ]
         }

@@ -13,6 +13,7 @@ from typing import List, Dict
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "."))
 from Prompt import *
+from Redis import *
 
 """
 The BaseModel class declares several attributes such as model, roles, messages, temp, api_key, max_tokens, and args.
@@ -72,6 +73,7 @@ class BaseLLM(object):
         # Implementer needs to write interface for this
         return
 
+
     def is_code(self, response):
         import re
         regex_pattern = r"```(?:[a-zA-Z]+)?(?:[a-zA-Z]+\n)?([^`]+)(?:```)?"
@@ -81,6 +83,17 @@ class BaseLLM(object):
         else:
             return False
     
+
+    def publish_to_redis(self, response, taskid):
+
+        
+        #publish to redis
+        if taskid:
+            meta_data = {"type": "response", "model_name": self.__class__.__name__}
+            Redis.publish_to_redis(type="multillm", 
+                                    taskid=taskid, 
+                                    result=response, 
+                                        meta_data=meta_data)
     
 
     

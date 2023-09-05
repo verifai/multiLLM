@@ -62,7 +62,7 @@ class GPT(BaseLLM):
             #print("error is_code() {0}" .format(str(e)))
             return('our prompt returned no code')
     
-    def get_response(self, prompt):
+    def get_response(self, prompt, taskid=None):
         
         # setup prompt for API call
         messages=[]
@@ -106,5 +106,9 @@ class GPT(BaseLLM):
         if not response:
             return response
         else: 
-            return(self.get_content(response))
+            content = self.get_content(response)
+            if content and taskid:
+                self.publish_to_redis(content, taskid)
+            return (content)
+            
           

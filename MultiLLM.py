@@ -72,7 +72,7 @@ class MultiLLM(object):
                 if not model:
                     continue
                 #print("model {0} : {1}" .format(model_name, dir(model)))
-                model_and_future.append((model_name, pool.apply_async(model.get_response, (prompt,))))
+                model_and_future.append((model_name, pool.apply_async(model.get_response, (prompt,taskid))))
 
             # Process the results of each model using the Action class
             for model_name, future in model_and_future:
@@ -80,10 +80,10 @@ class MultiLLM(object):
                     response = future.get()
                     #print("response {0} : {1}" .format(model_name, response))
                     responses[model_name] = response
-                    meta_data = {"type": "response", "model_name": model_name}
+                    #meta_data = {"type": "response", "model_name": model_name}
                     #publish to redis
-                    if taskid:
-                        Redis.publish_to_redis(type="multillm", taskid=taskid, result=response, meta_data=meta_data)
+                    #if taskid:
+                    #    Redis.publish_to_redis(type="multillm", taskid=taskid, result=response, meta_data=meta_data)
                 except Exception as exc:
                     print(f"(MultiLLM) Error: occurred: {exc}")
                     responses[model_name] = f"(MultiLLM) Error: occurred: {exc}"
