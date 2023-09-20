@@ -19,6 +19,7 @@ class Rank(Action):
         """
         init function
         """
+        self.is_code = None
 
         if config:
             try:
@@ -45,9 +46,18 @@ class Rank(Action):
             mfile = os.path.splitext(tail)[0]
             print("(Rank) loading rank_callback_file: {0}" .format(callback_file_path))
             rank_module = importlib.import_module(mfile)
+        
+        self.rank_module = rank_module
 
-            # invoke rank_CB
-            super().__init__(rank_module.rank_CB)
+        
+    def set_cb_funct(self) :   # invoke rank_CB
+            if self.is_code:
+                super().__init__(self.rank_module.rank_CB)
+            else:
+                super().__init__(self.rank_module.rank_CB_no_code)
+
+    def set_is_code(self, val):
+        self.is_code = val
 
 
 

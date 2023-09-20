@@ -40,6 +40,14 @@ from Action import *
 
 from Redis import *
 
+
+def task(model_name,prompt,taskid = None):
+    model = MultiLLM.model_registry[model_name]
+    if not model:
+        return 
+    response, is_code = model.get_response(prompt,taskid)
+    return model_name, response, is_code
+
 # MultiLLM class
 class MultiLLM(object):
 
@@ -62,33 +70,16 @@ class MultiLLM(object):
         """
         """
         responses = {}
-        
+        args = [(model_name,prompt,taskid) for model_name in self.model_names]
+        is_code_list = []
         with multiprocessing.Pool() as pool:
-            # Create a list of (model_name, Future) tuples for each model response
-            model_and_future = []
-            for model_name in self.model_names:
-                print('calling model: {0}' .format(model_name))
-                model = MultiLLM.model_registry[model_name]
-                if not model:
-                    continue
-                #print("model {0} : {1}" .format(model_name, dir(model)))
-                model_and_future.append((model_name, pool.apply_async(model.get_response, (prompt,taskid))))
-
-            # Process the results of each model using the Action class
-            for model_name, future in model_and_future:
-                try:
-                    response = future.get()
-                    #print("response {0} : {1}" .format(model_name, response))
-                    responses[model_name] = response
-                    #meta_data = {"type": "response", "model_name": model_name}
-                    #publish to redis
-                    #if taskid:
-                    #    Redis.publish_to_redis(type="multillm", taskid=taskid, result=response, meta_data=meta_data)
-                except Exception as exc:
-                    print(f"(MultiLLM) Error: occurred: {exc}")
-                    responses[model_name] = f"(MultiLLM) Error: occurred: {exc}"
-
-
+            for model_name,response, is_code in pool.starmap(task,args):
+                responses[model_name] = response
+                is_code_list.append(is_code)
+                if True in is_code_list:
+                    is_code = True
+                else:
+                    is_code = False
                 try:
                     # Process the response using the Action class concurrently for each action_callback
                     if action_chain:
@@ -101,21 +92,17 @@ class MultiLLM(object):
                     else:
                         result = response
                         
-                        print("Result:", result)
-                        """
-                            with multiprocessing.Pool() as action_pool:
-                            action_results = action_pool.apply_async(action_chain.apply, (response,))
-                            print("Action result:", action_results.get())
-                            # You can choose to do something with 'action_results' if needed.
-                            """
-                        
+                        print("Result:", result)                 
                 except Exception as exc:
                     print(f"(MultiLLM) Error1: occurred: {exc}")
                     responses[model_name] = f"Error occurred: {exc}"
+            
 
         if not rank_chain:
             return responses
         else:
+            rank_chain.set_is_code(is_code)
+            rank_chain.set_cb_funct()
             rank_response = rank_chain.apply(responses)
             if taskid:
                 Redis.publish_to_redis(type="multillm", taskid=taskid, result=rank_response, meta_data={"type": "ranking"})

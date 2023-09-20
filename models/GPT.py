@@ -54,13 +54,13 @@ class GPT(BaseLLM):
         try:
             if self.is_code(resp):
                 print('{0} response {1}' .format(self.__class__.__name__,resp))
-                return resp
+                return resp, True
             else:
                 #print('GPT is not code')
-                return('your prompt returned no code')
+                return resp, False
         except Exception as e:
             #print("error is_code() {0}" .format(str(e)))
-            return('our prompt returned no code')
+            return('GPT response failed as {}'.format(e))
     
     def get_response(self, prompt, taskid=None):
         
@@ -106,9 +106,9 @@ class GPT(BaseLLM):
         if not response:
             return response
         else: 
-            content = self.get_content(response)
+            content, is_code = self.get_content(response)
             if content and taskid:
                 self.publish_to_redis(content, taskid)
-            return (content)
+            return (content), is_code
             
           

@@ -32,7 +32,7 @@ Read our paper, learn more about the model, or get started with code on GitHub.
 https://ai.meta.com/llama/
 """
 
-class LLAMA2(BaseLLM):
+class CODEGEN(BaseLLM):
     
 
     #implement here
@@ -41,9 +41,9 @@ class LLAMA2(BaseLLM):
        
         # add values here directly or if kwargs are specified they are taken from the config file
         defaults  = {
-            "class_name" : "LLAMA2",
-            "model" : "meta-llama/Llama-2-7b-chat-hf",
-            "credentials" : "key.json"
+            "class_name" : "CODEGEN",
+            "model" : "salesforce/codegen-350M-mono",
+            "credentials" : null
         }
        
         
@@ -53,7 +53,7 @@ class LLAMA2(BaseLLM):
     
         """ Get the text from the response of an LLM """
         try:
-            resp = response["generated_text"]
+            resp = response
         except Exception as e:
             #print("error is_code() {0}" .format(str(e)))
             return('your prompt returned no response  as {}'.format(e))
@@ -66,7 +66,7 @@ class LLAMA2(BaseLLM):
                 return str(resp), False
         except Exception as e:
             #print("error is_code() {0}" .format(str(e)))
-            return('LLAMA2 response failed as {}'.format(e))
+            return('CODEGEN response failed as {}'.format(e))
         
     
     
@@ -74,9 +74,9 @@ class LLAMA2(BaseLLM):
         
         
         """Predict using a Large Language Model."""
-        project_id = "llama2"
+        project_id = "CODEGEN"
         location = "us-central1"
-        url = "http://34.221.191.141/llama2/predict"
+        url = "http://35.89.176.32/codegen/predict"
         
         """ Get credentials file set in the config, and set appropriate variables for your model """
 
@@ -86,22 +86,18 @@ class LLAMA2(BaseLLM):
             ## See if we can invoke importToDb
             headers = {"Content-Type" :  "application/json"}
             prmpt = prompt.get_string() + " , please return response in markdown format"
-            if prompt.context:
-                prmpt += "\n" + prompt.get_context()
-
             values = {'question':  prmpt}
-
       
             resp = requests.post(url, data=json.dumps(values),headers=headers)
-            #print("LLAMA2 Response: {0}" .format(resp.text))
+            #print("CODEGEN Response: {0}" .format(resp.text))
             data = resp.json()
-            #print("LLAMA2 JSON Response: {0}" .format(data))
-            content, is_code = self.get_content(data[0])
+            #print("CODEGEN JSON Response: {0}" .format(data))
+            content, is_code = self.get_content(data)
             content = content.replace(prmpt, "")
             if content and taskid:
                 self.publish_to_redis(content, taskid)
             return (content), is_code
             
         except Exception as e:
-            #print('error calling llama2: {0}' .format(str(e)))
-            return('LLAMA2 failed as {}'.format(e))
+            #print('error calling CODEGEN: {0}' .format(str(e)))
+            return('CODEGEN failed as {}'.format(e))

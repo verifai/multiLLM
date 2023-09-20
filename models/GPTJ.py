@@ -4,10 +4,22 @@ from multillm.BaseLLM import BaseLLM
 from multillm.Prompt import Prompt
 from gpt4all import GPT4All
 
-# Openai gpt interface
+# GPT-J
 """
 The GPT class extends the BaseModel class and overrides the get_response() method, providing an implementation.
 The get_response() method takes a response parameter and returns the content of the first response in the given response object.
+Model Description
+This model has been finetuned from GPT-J
+
+Developed by: Nomic AI
+Model Type: A finetuned GPT-J model on assistant style interaction data
+Language(s) (NLP): English
+License: Apache-2
+Finetuned from model [optional]: GPT-J
+
+https://home.nomic.ai/
+
+
 """
 class GPTJ(BaseLLM):
     

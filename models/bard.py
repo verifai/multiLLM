@@ -41,13 +41,14 @@ class BARD(BaseLLM):
         try:
             if self.is_code(str(response)):
                 print("{0} response: {1}" .format(self.__class__.__name__,str(response)))
-                return str(response)
+                return str(response), True
             else:
                 #print('BARD is not code')
-                return('your prompt returned no code')
+                print("{0} response: {1}" .format(self.__class__.__name__,str(response)))
+                return str(response), False
         except Exception as e:
             #print("error is_code() {0}" .format(str(e)))
-            return('your prompt returned no code')
+            return('Bard response failed {}'.format(e))
         
     
     
@@ -74,10 +75,14 @@ class BARD(BaseLLM):
             "temperature" : 0.2
         }
 
-        chat = chat_model.start_chat(context="",
-                                     examples=[]
-                                     
-        )
+        """ If context file exists, use it """
+        context = ""
+        if prompt.context:
+            context = prompt.get_context()
+    
+        """ Create a Chat_model """        
+        chat = chat_model.start_chat(context=context,
+                                     examples=[] )
         try:
             """ Call API """
             response=chat.send_message( prompt.get_string(), **parameters)
@@ -88,8 +93,8 @@ class BARD(BaseLLM):
         if not response:
             return response
         else: 
-            content = self.get_content(response)
+            content, is_code = self.get_content(response)
             if content and taskid:
                 self.publish_to_redis(content, taskid)
-            return(content)
+            return(content), is_code
 

@@ -61,6 +61,15 @@ def main():
     )
 
     parser.add_argument(
+        "-llms",
+        "--llms",
+        dest="llms",
+        nargs="*",
+        help="Specify a list of LLMs to use (Default=All)",
+        metavar="STRING",
+    )
+
+    parser.add_argument(
         "-taskid",
         "--taskid",
         dest="taskid",
@@ -87,6 +96,24 @@ def main():
     """ create an instantce of the Prompt() class """
     p = Prompt(args.prompt)
     p.role = "user"
+   
+    
+    """ If Context file is specified, use it 
+      We support only one file at the moment
+      """ 
+    if args.source:
+      
+        src = args.source[0] 
+        if not os.path.exists(src):
+            print('(MultiLLM) Context file doesnot exist: {0}' .format(src))
+        else:
+            try:
+                with open(src, 'r') as file:
+                    p.context = file.read()
+            except Exception as e:
+                print('(MultiLLM) could not read context file: {0}: {1}' .format(src, str(e)))
+                      
+
 
     ## Action operation definitions
     # Action Operation 1: Extract code from the content
@@ -115,7 +142,7 @@ def main():
             else:
                 print("Syntax error parsing code")
             print("No matches")
-            return None
+            return data
             #return "your prompt returned no code"
 
         else:
