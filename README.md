@@ -1,6 +1,6 @@
 # Multi LLM
 
-VerifAI Implementation of invoking multiple large language models concurrently and ranking results
+:rocket: VerifAI's Implementation of invoking multiple large language models concurrently and ranking results ⭐
 
 ******
 
@@ -21,7 +21,7 @@ Edit and add your "credentials" of each *llm* to the [config.json](config.json) 
                     "file": "bard.py",
                     "class_name": "BARD",
                     "model": "chat-bison@001",
-                    * "credentials": "/path/to/google/key.json" *
+                    "credentials": "/path/to/google/key.json"
                 },
 ```
 
