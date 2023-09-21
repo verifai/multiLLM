@@ -1,6 +1,6 @@
 # Multi LLM
 
-:rocket: VerifAI's Implementation of invoking multiple large language models concurrently and ranking results ⭐
+:rocket: VerifAI's Implementation of invoking multiple large language models concurrently and ranking results. New models and ranking functions can be added easily to extend MultiLLM's capabilities. ⭐
 
 ******
 
