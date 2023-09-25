@@ -90,8 +90,7 @@ def main():
         print("(MultiLLM) please specify a prompt")
         sys.exit(0)
 
-    """ create an instance of the  Multi_LMM class """
-    multi_llm = MultiLLM(args.config_file)
+   
 
     """ create an instantce of the Prompt() class """
     p = Prompt(args.prompt)
@@ -113,8 +112,17 @@ def main():
             except Exception as e:
                 print('(MultiLLM) could not read context file: {0}: {1}' .format(src, str(e)))
                       
+    #If subset of LLMs is specified use it.
+    if args.llms:
+        llms = args.llms
+        
+    else:
+        llms = []
 
-
+    """ create an instance of the  Multi_LMM class """
+    multi_llm = MultiLLM(args.config_file, model_names = llms)
+    
+    
     ## Action operation definitions
     # Action Operation 1: Extract code from the content
     def extract_code(data):

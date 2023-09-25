@@ -121,6 +121,8 @@ class MultiLLM(object):
 
             try:
                 llms = conf_data["Config"]["MultiLLM"]["llms"]
+                if self.model_names:
+                    llms = [item for item in llms if item["class_name"] in self.model_names]
                 for llm in llms:
                     model_file = None
                     model = None
@@ -153,7 +155,8 @@ class MultiLLM(object):
                         loaded_llms[model_file_name] = llm_model
                         print('finished loading module {0}' .format(model_file_name))
                         # Add model name to class var
-                        self.model_names.append(class_name)
+                        if class_name not in self.model_names:
+                            self.model_names.append(class_name)
                         self.register_model(llm_model, llm)
                     except Exception as e:
                         print("ERROR (MultiLLM): could not load model from config file '{0}' : {1}, skipping"
