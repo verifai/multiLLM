@@ -41,11 +41,11 @@ from Action import *
 from Redis import *
 
 
-def task(model_name,prompt,taskid = None):
+def task(model_name,prompt,taskid = None, convid = None):
     model = MultiLLM.model_registry[model_name]
     if not model:
         return 
-    response, is_code = model.get_response(prompt,taskid)
+    response, is_code = model.get_response(prompt,taskid, convid)
     return model_name, response, is_code
 
 # MultiLLM class
@@ -66,11 +66,11 @@ class MultiLLM(object):
             self.models = self.load_models( config) #reads data
         
    
-    def run(self, prompt, action_chain, rank_chain, taskid=None):
+    def run(self, prompt, action_chain, rank_chain, taskid=None, convid = None):
         """
         """
         responses = {}
-        args = [(model_name,prompt,taskid) for model_name in self.model_names]
+        args = [(model_name,prompt,taskid, convid) for model_name in self.model_names]
         is_code_list = []
         with multiprocessing.Pool() as pool:
             for model_name,response, is_code in pool.starmap(task,args):

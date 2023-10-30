@@ -10,10 +10,6 @@ import requests
 from multillm.BaseLLM import BaseLLM
 from multillm.Prompt import Prompt
 
-""" Google vertexai imports """
-import vertexai
-from vertexai.preview.language_models import TextGenerationModel
-from vertexai.preview.language_models import ChatModel, InputOutputTextPair
 
 
 # LLAMA-2 interface
@@ -70,7 +66,7 @@ class LLAMA2(BaseLLM):
         
     
     
-    def get_response(self, prompt: Prompt, taskid=None):
+    def get_response(self, prompt: Prompt, taskid=None, convid = None):
         
         
         """Predict using a Large Language Model."""

@@ -28,8 +28,7 @@ from multillm.MultiLLM import MultiLLM
 
 
 def main():
-    # Disable printing to stdout temporarily
-    sys.stdout = open(os.devnull, 'w')
+    
 
     global redisConnected
 
@@ -77,8 +76,33 @@ def main():
         metavar="STRING",
     )
 
+    parser.add_argument(
+        "-convid",
+        "--conversationid",
+        dest="convid",
+        help="Specify a convid to identify if prompt is continuing a thread",
+        metavar="STRING",
+    )
+
+    parser.add_argument(
+        "-debug",
+        "--debug",
+        action="store_true", 
+        dest="debug", 
+        help = "Run multill in debug mode")
+    
     """ Process command line arguments """
     args, unknown = parser.parse_known_args()
+
+   
+    # Disable printing to stdout temporarily
+    if args.debug == False:
+        sys.stdout = open(os.devnull, 'w')
+
+    if args.convid:
+        convid = args.convid
+    else:
+        convid = None
 
     """ make sure config file is specified """
     if not args.config_file:
@@ -90,18 +114,18 @@ def main():
         print("(MultiLLM) please specify a prompt")
         sys.exit(0)
 
-   
+
 
     """ create an instantce of the Prompt() class """
     p = Prompt(args.prompt)
     p.role = "user"
-   
-    
+
+
     """ If Context file is specified, use it 
       We support only one file at the moment
-      """ 
+      """
     if args.source:
-      
+
         src = args.source[0] 
         if not os.path.exists(src):
             print('(MultiLLM) Context file doesnot exist: {0}' .format(src))
@@ -111,18 +135,18 @@ def main():
                     p.context = file.read()
             except Exception as e:
                 print('(MultiLLM) could not read context file: {0}: {1}' .format(src, str(e)))
-                      
+
     #If subset of LLMs is specified use it.
     if args.llms:
         llms = args.llms
-        
+
     else:
         llms = []
 
     """ create an instance of the  Multi_LMM class """
     multi_llm = MultiLLM(args.config_file, model_names = llms)
-    
-    
+
+
     ## Action operation definitions
     # Action Operation 1: Extract code from the content
     def extract_code(data):
@@ -171,12 +195,12 @@ def main():
     # Create the Rank instance
     # Check if rank_callback_file is specified
     try:
-        rank = Rank(args.config_file)
+        rank = Rank(args.config_file) if convid is None else None
     except Exception as e:
         rank = None
 
     # Call the model
-    r = multi_llm.run(p, action_chain, rank, args.taskid)
+    r = multi_llm.run(p, action_chain, rank, args.taskid, convid)
     # Restore stdout and print
     res = {"result": r}
     sys.stdout = sys.__stdout__

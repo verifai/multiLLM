@@ -8,6 +8,7 @@
 
 import os
 import sys
+import pymongo
 
 from typing import List, Dict
 
@@ -95,5 +96,39 @@ class BaseLLM(object):
                                     result=response, 
                                         meta_data=meta_data)
     
+    def get_conversation_history(self, convid, mod_name):
+        
+        if os.getenv("MONGO_URI"):
+            MONGO_URI = os.getenv("MONGO_URI")
+    
+        else:
+            MONGO_URI = "mongodb://localhost:27017"
+
+        client = pymongo.MongoClient(MONGO_URI)
+
+        #Select the database
+        db = client["verifai"]  # Replace "db" with your database name
+
+        # Select the collection
+        collection = db["multillm"]  
+        key= "conversationId"
+        dataset = collection.find({key: convid})
+
+    
+
+        qa_set = []
+
+        for data in dataset:
+            prompt = data["prompt"]
+            for result in data["results"]:
+                
+                if "model_name" in result["meta_data"] and result["meta_data"]["model_name"] == mod_name:
+                    content = result["result"]
+                    qa_set.append((prompt,content))
+                
+        return qa_set
+
+
+        
 
     

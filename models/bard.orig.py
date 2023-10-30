@@ -2,7 +2,6 @@ import os,sys
 import json
 from multillm.BaseLLM import BaseLLM
 from multillm.Prompt import Prompt
-import requests
 
 """ Google vertexai imports """
 import vertexai
@@ -37,8 +36,6 @@ class BARD(BaseLLM):
     
     # Get Text
     def get_content(self, response):
-
-        #sys.stdout = sys.__stdout__
     
         """ Get the text from the response of an LLM """
         try:
@@ -69,17 +66,17 @@ class BARD(BaseLLM):
         vertexai.init(project=project_id, location=location)
         print('model {0}' .format(self.model))
         chat_model = ChatModel.from_pretrained(self.model)
+        
+        """ 
         "client_id" =  "xxxxxx",
         "client_secret": "xxxx",
         "quota_project_id": "verifai-ml-training",
         "refresh_token": "1//06LRKjz4n1BBHCgYIARAAGAYSNgF-L9Ir2oB1-gO0hIjXcbMVVgrpYLSTtoxGLhT8DB7MsfmOkSNsh1gcaLkKP9PxBVxOJmT1pw",
         "type": "authorized_user"
-        """ 
         try:
             with open(self.credentials, 'r') as file:
                 # Load the JSON data from the file
                 cred = json.load(file)
-                print('cred: {0}' .format(cred))
             
         except Exception as e:
             print('(multi_llm) error: could not load credentials {0} : {1}' .format(self.credentials,str(e)))
@@ -91,7 +88,7 @@ class BARD(BaseLLM):
             "top_k" :  40,
             "temperature" : 0.2
         }
-        url = "https://us-central1-aiplatform.googleapis.com/v1/projects/" + cred['quota_project_id'] + "/locations/us-central1/publishers/google/models/chat-bison:predict"
+        urls = "https://us-central1-aiplatform.googleapis.com/v1/projects/" + cred.quota_project_id + "/locations/us-central1/publishers/google/models/chat-bison:predict"
         """ If context file exists, use it """
         context = ""
         if prompt.context:
@@ -114,12 +111,12 @@ class BARD(BaseLLM):
 
         try:
             """ Call API """
-            headers = {"Authorization": "Bearer " + cred['refresh_token'], "Content-Type" :  "application/json", 'accept': "application/json"}
+            headers = {"Authorization": "Bearer " + cred.refresh_token, "Content-Type" :  "application/json", 'accept': "application/json"}
             
 
-            response = requests.post(url, data=json.dumps(payload),headers=headers)
-            print("Bard Response: {0}" .format(response.text))
-            data = response.json()
+            resp = requests.post(url, data=json.dumps(payload),headers=headers)
+            print("Bard Response: {0}" .format(resp.text))
+            data = resp.json()
             
         except Exception as e:
             print('error calling bard: {0}' .format(str(e)))
@@ -135,7 +132,7 @@ class BARD(BaseLLM):
     
 
 
-    def get_response(self, prompt: Prompt, taskid=None, convid = None):
+    def get_response1(self, prompt: Prompt, taskid=None, convid = None):
         
         
         """Predict using a Large Language Model."""

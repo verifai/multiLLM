@@ -62,10 +62,14 @@ class GPT(BaseLLM):
             #print("error is_code() {0}" .format(str(e)))
             return('GPT response failed as {}'.format(e))
     
-    def get_response(self, prompt, taskid=None):
-        
+    def get_response(self, prompt, taskid=None, convid = None):
         # setup prompt for API call
         messages=[]
+        if convid:
+            qa = super().get_conversation_history(convid,"GPT")
+            for q,a in qa:
+                messages.append( {"role": "user", "content" : q})
+                messages.append( {"role": "assistant", "content" : a})
         
         messages.append( {"role": prompt.get_role(), "content" : prompt.get_string()})
         if prompt.context:
@@ -112,3 +116,4 @@ class GPT(BaseLLM):
             return (content), is_code
             
           
+        
