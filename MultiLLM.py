@@ -42,11 +42,20 @@ from Redis import *
 
 
 def task(model_name,prompt,taskid = None, convid = None):
-    model = MultiLLM.model_registry[model_name]
+    model = model_registry[model_name]
     if not model:
         return 
     response, is_code = model.get_response(prompt,taskid, convid)
     return model_name, response, is_code
+
+
+# initialize worker processes
+def init_worker(data):
+    # declare scope of a new global variable
+    global model_registry
+    # store argument in the global variable for this process
+    model_registry = data
+
 
 # MultiLLM class
 class MultiLLM(object):
@@ -72,7 +81,7 @@ class MultiLLM(object):
         responses = {}
         args = [(model_name,prompt,taskid, convid) for model_name in self.model_names]
         is_code_list = []
-        with multiprocessing.Pool() as pool:
+        with multiprocessing.Pool(initializer=init_worker, initargs=(MultiLLM.model_registry,)) as pool:
             for model_name,response, is_code in pool.starmap(task,args):
                 responses[model_name] = response
                 is_code_list.append(is_code)
