@@ -1,5 +1,9 @@
 # Multi LLM
 
+<a href="https://theresanaiforthat.com/ai/verifai/?ref=embed" target="_blank"><img width="300" src="https://media.theresanaiforthat.com/featured3.png"></a>
+
+<a href="https://www.producthunt.com/products/verifai-s-multillm?utm_source=badge-follow&utm_medium=badge&utm_souce=badge-verifai&#0045;s&#0045;multillm" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=549233&theme=dark" alt="VerifAI MultiLLM - Generate" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
 VerifAI Implementation of invoking multiple large language models concurrently and ranking results
 
 ******
